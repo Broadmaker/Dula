@@ -140,25 +140,25 @@
 
 ## Stage 8 — SQLite Database
 
-- [ ] 8.1 `src/services/db/match.db.ts`:
+- [x] 8.1 `src/services/db/match.db.ts`:
   - `CREATE TABLE IF NOT EXISTS matches` per SCHEMA.md
   - WAL mode: `PRAGMA journal_mode=WAL`
   - All indexes created on init
   - Functions: `insertMatch`, `updateMatch`, `getMatchByUuid`, `getAllMatches`, `getRecentMatches`
-- [ ] 8.2 Wire `SQLiteProvider` in `App.tsx` — DB initializes on first run
-- [ ] 8.3 Test: insert a mock match, read it back — verify round-trip
-- [ ] 8.4 Commit: `feat: sqlite schema and match.db service`
+- [x] 8.2 Wire `SQLiteProvider` in `App.tsx` — DB initializes on first run
+- [x] 8.3 Test: insert a mock match, read it back — verify round-trip
+- [x] 8.4 Commit: `feat: sqlite schema and match.db service`
 
 ---
 
 ## Stage 9 — Mock Data & Mock Hooks
 
-- [ ] 9.1 `src/mocks/match.mock.ts` — 3–5 realistic completed matches + 1 active match
-- [ ] 9.2 `src/mocks/user.mock.ts` — 1 local user profile
-- [ ] 9.3 `src/hooks/useMatchMock.ts` — returns `{ data, isLoading, isError, isEmpty }` with simulated 800ms delay
-- [ ] 9.4 `src/hooks/useProfileMock.ts` — same shape
-- [ ] 9.5 Verify mock hook shape matches what real hook will return
-- [ ] 9.6 Commit: `feat: mock data and mock hooks`
+- [x] 9.1 `src/mocks/match.mock.ts` — 3–5 realistic completed matches + 1 active match
+- [x] 9.2 `src/mocks/user.mock.ts` — 1 local user profile
+- [x] 9.3 `src/hooks/useMatchMock.ts` — returns `{ data, isLoading, isError, isEmpty }` with simulated 800ms delay
+- [x] 9.4 `src/hooks/useProfileMock.ts` — same shape
+- [x] 9.5 Verify mock hook shape matches what real hook will return
+- [x] 9.6 Commit: `feat: mock data and mock hooks`
 
 ---
 
