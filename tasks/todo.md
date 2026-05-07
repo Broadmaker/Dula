@@ -100,11 +100,11 @@
 
 ## Stage 4 — Constants & Theme
 
-- [ ] 4.1 `src/constants/theme.ts` — color tokens + font names from PROJECT.md §10
-- [ ] 4.2 `src/constants/scoring.ts` — `SCORE_LIMITS`, `MAX_TIMEOUTS_PER_TEAM`, `SIDE_SWITCH_THRESHOLD`
-- [ ] 4.3 `src/constants/firebase.ts` — collection name constants (empty strings for now, used in Phase 2)
-- [ ] 4.4 Configure `tailwind.config.js` — extend with DULA color tokens
-- [ ] 4.5 Commit: `feat: add theme constants and tailwind config`
+- [x] 4.1 `src/constants/theme.ts` — color tokens + font names from PROJECT.md §10
+- [x] 4.2 `src/constants/scoring.ts` — `SCORE_LIMITS`, `MAX_TIMEOUTS_PER_TEAM`, `SIDE_SWITCH_THRESHOLD`
+- [x] 4.3 `src/constants/firebase.ts` — collection name constants (empty strings for now, used in Phase 2)
+- [x] 4.4 Configure `tailwind.config.js` — extend with DULA color tokens
+- [x] 4.5 Commit: `feat: add theme constants and tailwind config`
 
 ---
 
