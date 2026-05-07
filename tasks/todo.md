@@ -122,10 +122,10 @@
 
 ## Stage 6 — Utilities & Logger
 
-- [ ] 6.1 `src/utils/logger.ts` — central logger (GLOBAL.md §14 pattern)
-- [ ] 6.2 `src/utils/formatDate.ts` — ISO 8601 helpers (`formatMatchDate`, `formatDuration`)
-- [ ] 6.3 `src/utils/shareCard.ts` — pure function: `buildShareCardData(match: Match): ShareCardData`
-- [ ] 6.4 Commit: `feat: add logger, formatDate, and shareCard utils`
+- [x] 6.1 `src/utils/logger.ts` — central logger (GLOBAL.md §14 pattern)
+- [x] 6.2 `src/utils/formatDate.ts` — ISO 8601 helpers (`formatMatchDate`, `formatDuration`)
+- [x] 6.3 `src/utils/shareCard.ts` — pure function: `buildShareCardData(match: Match): ShareCardData`
+- [x] 6.4 Commit: `feat: add logger, formatDate, and shareCard utils`
 
 ---
 
