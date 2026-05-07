@@ -164,22 +164,22 @@
 
 ## Stage 10 — Navigation Scaffold
 
-- [ ] 10.1 `src/navigation/types.ts` — ALL param lists (per PROJECT.md §5)
-- [ ] 10.2 Placeholder screens — one `<Text>` component per screen, just enough to navigate:
+- [x] 10.1 `src/navigation/types.ts` — ALL param lists (per PROJECT.md §5)
+- [x] 10.2 Placeholder screens — one `<Text>` component per screen, just enough to navigate:
   - `DashboardScreen`, `MatchSetupScreen`
   - `LiveScoringScreen`, `MatchSummaryScreen`, `ShareCardScreen`
   - `MatchHistoryScreen`, `MatchDetailScreen`
   - `ProfileScreen`, `SettingsScreen`
-- [ ] 10.3 `src/navigation/stacks/HomeStack.tsx`
-- [ ] 10.4 `src/navigation/stacks/MatchStack.tsx`
-- [ ] 10.5 `src/navigation/stacks/HistoryStack.tsx`
-- [ ] 10.6 `src/navigation/stacks/ProfileStack.tsx`
-- [ ] 10.7 `src/navigation/tabs/MainTabs.tsx` — bottom tab bar with all 4 tabs (Analytics tab hidden until Phase 3)
-- [ ] 10.8 `src/navigation/RootNavigator.tsx` — mounts `MainTabs` directly (no auth gate in Phase 1)
-- [ ] 10.9 Wire `RootNavigator` in `App.tsx`
-- [ ] 10.10 Manually tap through every screen — no crash, correct tab/stack behaviour
-- [ ] 10.11 Run `npx tsc --noEmit` — zero errors on param lists
-- [ ] 10.12 Commit: `feat: full navigation scaffold with placeholder screens`
+- [x] 10.3 `src/navigation/stacks/HomeStack.tsx`
+- [x] 10.4 `src/navigation/stacks/MatchStack.tsx`
+- [x] 10.5 `src/navigation/stacks/HistoryStack.tsx`
+- [x] 10.6 `src/navigation/stacks/ProfileStack.tsx`
+- [x] 10.7 `src/navigation/tabs/MainTabs.tsx` — bottom tab bar with all 4 tabs (Analytics tab hidden until Phase 3)
+- [x] 10.8 `src/navigation/RootNavigator.tsx` — mounts `MainTabs` directly (no auth gate in Phase 1)
+- [x] 10.9 Wire `RootNavigator` in `App.tsx`
+- [x] 10.10 Manually tap through every screen — no crash, correct tab/stack behaviour
+- [x] 10.11 Run `npx tsc --noEmit` — zero errors on param lists
+- [x] 10.12 Commit: `feat: full navigation scaffold with placeholder screens`
 
 ---
 
