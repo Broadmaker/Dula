@@ -110,13 +110,13 @@
 
 ## Stage 5 — Types
 
-- [ ] 5.1 `src/types/base.types.ts` — `BaseEntity`, `SyncStatus` (GLOBAL.md §10)
-- [ ] 5.2 `src/types/event.types.ts` — `MatchEvent` union type
-- [ ] 5.3 `src/types/match.types.ts` — `Match`, `Team`, `MatchType`, `MatchStatus`, `ScoreLimit`
-- [ ] 5.4 `src/types/user.types.ts` — `UserProfile`
-- [ ] 5.5 `src/types/tournament.types.ts` — `Tournament`, `Standing`, `Court` (scaffold only — Phase 4)
-- [ ] 5.6 Run `npx tsc --noEmit` — zero errors
-- [ ] 5.7 Commit: `feat: define all core TypeScript types`
+- [x] 5.1 `src/types/base.types.ts` — `BaseEntity`, `SyncStatus` (GLOBAL.md §10)
+- [x] 5.2 `src/types/event.types.ts` — `MatchEvent` union type
+- [x] 5.3 `src/types/match.types.ts` — `Match`, `Team`, `MatchType`, `MatchStatus`, `ScoreLimit`
+- [x] 5.4 `src/types/user.types.ts` — `UserProfile`
+- [x] 5.5 `src/types/tournament.types.ts` — `Tournament`, `Standing`, `Court` (scaffold only — Phase 4)
+- [x] 5.6 Run `npx tsc --noEmit` — zero errors
+- [x] 5.7 Commit: `feat: define all core TypeScript types`
 
 ---
 
