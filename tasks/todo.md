@@ -70,7 +70,7 @@
 
 ## Stage 3 — Folder Structure
 
-- [ ] 3.1 Scaffold all folders per PROJECT.md §6:
+- [x] 3.1 Scaffold all folders per PROJECT.md §6:
   ```
   src/navigation/stacks/
   src/navigation/tabs/
@@ -93,8 +93,8 @@
   src/constants/
   tasks/
   ```
-- [ ] 3.2 Add a `.gitkeep` in each empty folder so git tracks them
-- [ ] 3.3 Commit: `feat: scaffold folder structure`
+- [x] 3.2 Add a `.gitkeep` in each empty folder so git tracks them
+- [x] 3.3 Commit: `feat: scaffold folder structure`
 
 ---
 
