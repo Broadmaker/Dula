@@ -131,10 +131,10 @@
 
 ## Stage 7 — Zustand Stores
 
-- [ ] 7.1 `src/store/uiStore.ts` — `isOffline`, `toasts`, `liveSyncEnabled` (off)
-- [ ] 7.2 `src/store/activeMatchStore.ts` — full store per PROJECT.md §7
-- [ ] 7.3 Verify stores export correctly — no TypeScript errors
-- [ ] 7.4 Commit: `feat: add uiStore and activeMatchStore`
+- [x] 7.1 `src/store/uiStore.ts` — `isOffline`, `toasts`, `liveSyncEnabled` (off)
+- [x] 7.2 `src/store/activeMatchStore.ts` — full store per PROJECT.md §7
+- [x] 7.3 Verify stores export correctly — no TypeScript errors
+- [x] 7.4 Commit: `feat: add uiStore and activeMatchStore`
 
 ---
 
