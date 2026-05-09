@@ -1,7 +1,18 @@
 import { View, Text, TouchableOpacity } from "react-native";
-import type { HomeStackScreenProps } from "@/navigation/types";
+import { useNavigation } from "@react-navigation/native";
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import type { HomeStackParamList, MainTabParamList } from "@/navigation/types";
+import type { CompositeNavigationProp } from "@react-navigation/native";
+import type { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
 
-export function MatchSetupScreen({ navigation }: HomeStackScreenProps<"MatchSetup">) {
+type NavigationProp = CompositeNavigationProp<
+  NativeStackNavigationProp<HomeStackParamList, "MatchSetup">,
+  BottomTabNavigationProp<MainTabParamList>
+>;
+
+export function MatchSetupScreen() {
+  const navigation = useNavigation<NavigationProp>();
+
   return (
     <View className="flex-1 items-center justify-center bg-white p-4">
       <Text className="text-2xl font-heading text-primary">Match Setup</Text>

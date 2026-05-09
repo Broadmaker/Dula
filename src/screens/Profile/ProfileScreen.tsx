@@ -1,7 +1,11 @@
 import { View, Text, TouchableOpacity } from "react-native";
-import type { ProfileStackScreenProps } from "@/navigation/types";
+import { useNavigation } from "@react-navigation/native";
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import type { ProfileStackParamList } from "@/navigation/types";
 
-export function ProfileScreen({ navigation }: ProfileStackScreenProps<"Profile">) {
+export function ProfileScreen() {
+  const navigation = useNavigation<NativeStackNavigationProp<ProfileStackParamList, "Profile">>();
+
   return (
     <View className="flex-1 items-center justify-center bg-white p-4">
       <View className="w-24 h-24 bg-primary rounded-full items-center justify-center">
@@ -14,7 +18,7 @@ export function ProfileScreen({ navigation }: ProfileStackScreenProps<"Profile">
         onPress={() => navigation.navigate("Settings")}
       >
         <Text className="text-white font-body">Settings</Text>
-        <Text className="text-white font-body">></Text>
+        <Text className="text-white font-body">{">"}</Text>
       </TouchableOpacity>
     </View>
   );

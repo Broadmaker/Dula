@@ -1,7 +1,11 @@
 import { View, Text, TouchableOpacity } from "react-native";
-import type { HomeStackScreenProps } from "@/navigation/types";
+import { useNavigation } from "@react-navigation/native";
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import type { HomeStackParamList } from "@/navigation/types";
 
-export function DashboardScreen({ navigation }: HomeStackScreenProps<"Dashboard">) {
+export function DashboardScreen() {
+  const navigation = useNavigation<NativeStackNavigationProp<HomeStackParamList, "Dashboard">>();
+
   return (
     <View className="flex-1 items-center justify-center bg-white p-4">
       <Text className="text-2xl font-heading text-primary">Dashboard</Text>

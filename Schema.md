@@ -249,7 +249,7 @@ CREATE INDEX IF NOT EXISTS idx_matches_created_at  ON matches (created_at DESC);
 ```
 
 > `teams_json`, `events_json`, `score_json` store serialized JSON.
-> Parse with `JSON.parse()` in `match.db.ts` — never access raw JSON outside the service layer.
+> Parse with `JSON.parse()` in `matchDb.ts` — never access raw JSON outside the service layer.
 
 ---
 

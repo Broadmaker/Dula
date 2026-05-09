@@ -1,7 +1,12 @@
 import { View, Text, TouchableOpacity } from "react-native";
-import type { HistoryStackScreenProps } from "@/navigation/types";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import type { RouteProp } from "@react-navigation/native";
+import type { HistoryStackParamList } from "@/navigation/types";
 
-export function MatchDetailScreen({ navigation, route }: HistoryStackScreenProps<"MatchDetail">) {
+export function MatchDetailScreen() {
+  const navigation = useNavigation<NativeStackNavigationProp<HistoryStackParamList, "MatchDetail">>();
+  const route = useRoute<RouteProp<HistoryStackParamList, "MatchDetail">>();
   const { matchId } = route.params;
 
   return (

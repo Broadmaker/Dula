@@ -1,6 +1,7 @@
 import type { UserProfile } from "@/types/user.types";
 
 export const MOCK_USER: UserProfile = {
+  id: 0,
   uuid: "user-123",
   server_id: "sid-user-123",
   sync_status: "synced",

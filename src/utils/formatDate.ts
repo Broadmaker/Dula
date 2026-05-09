@@ -6,7 +6,7 @@ import { format, parseISO } from "date-fns";
 export const formatMatchDate = (isoString: string): string => {
   try {
     return format(parseISO(isoString), "PPP");
-  } catch (error) {
+  } catch {
     return "Invalid Date";
   }
 };

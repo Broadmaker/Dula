@@ -255,7 +255,7 @@ src/
 │   │   ├── match.api.ts             ← Implements BackendAdapter<Match> — Phase 2+
 │   │   └── user.api.ts              ← Implements BackendAdapter<UserProfile> — Phase 2+
 │   ├── db/
-│   │   ├── match.db.ts              ← SQLite local CRUD — Phase 1
+│   │   ├── matchDb.ts              ← SQLite local CRUD — Phase 1
 │   │   └── sync.db.ts               ← mutation_queue table — Phase 2+
 │   ├── sync/
 │   │   └── match.sync.ts            ← Sync queue worker — Phase 2+
@@ -310,11 +310,11 @@ src/
 | Offline banner, toast queue                     | Zustand        | `uiStore`                   |
 | Active match UI (score, timer, serve indicator) | Zustand        | `activeMatchStore`          |
 | Live sync enabled toggle                        | Zustand        | `uiStore.liveSyncEnabled`   |
-| Match history list (local)                      | TanStack Query | `useMatch` → `match.db.ts`  |
+| Match history list (local)                      | TanStack Query | `useMatch` → `matchDb.ts`  |
 | Match history list (cloud, Phase 2+)            | TanStack Query | `useMatch` → `match.api.ts` |
 | User profile (Phase 2+)                         | TanStack Query | `useProfile`                |
 | Analytics / stats (Phase 3+)                    | TanStack Query | `useAnalytics`              |
-| Local match cache                               | SQLite         | `match.db.ts`               |
+| Local match cache                               | SQLite         | `matchDb.ts`               |
 | Share card format selection                     | useState       | local to `ShareCardScreen`  |
 | Form fields (match setup)                       | useState       | local to `MatchSetupScreen` |
 
@@ -869,7 +869,7 @@ eas submit --platform ios
 - [ ] `DashboardScreen` — recent matches list, quick-start button
 - [ ] `MatchHistoryScreen` + `MatchDetailScreen` — past matches with reshare button
 - [ ] SQLite schema: `matches` table, WAL mode on
-- [ ] `match.db.ts` — local CRUD (no sync queue needed in Phase 1)
+- [ ] `matchDb.ts` — local CRUD (no sync queue needed in Phase 1)
 - [ ] Dark mode default
 - [ ] `OfflineBanner` wired to `uiStore.isOffline`
 

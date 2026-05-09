@@ -1,5 +1,4 @@
 import type { Match, Team } from "@/types/match.types";
-import type { MatchEvent } from "@/types/event.types";
 
 const TEAM_A: Team = {
   id: "team-a",
@@ -17,6 +16,7 @@ const TEAM_B: Team = {
 
 export const MOCK_MATCHES: Match[] = [
   {
+    id: 0,
     uuid: "match-1",
     server_id: "sid-match-1",
     sync_status: "synced",
@@ -41,6 +41,7 @@ export const MOCK_MATCHES: Match[] = [
     durationSeconds: 2400,
   },
   {
+    id: 0,
     uuid: "match-2",
     server_id: "sid-match-2",
     sync_status: "synced",
@@ -68,6 +69,7 @@ export const MOCK_MATCHES: Match[] = [
     durationSeconds: 1500,
   },
   {
+    id: 0,
     uuid: "match-3",
     server_id: null,
     sync_status: "pending",

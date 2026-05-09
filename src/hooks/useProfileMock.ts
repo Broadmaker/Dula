@@ -5,7 +5,7 @@ import { MOCK_USER } from "@/mocks/user.mock";
 export function useProfileMock() {
   const [data, setData] = useState<UserProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [isError, setIsError] = useState(false);
+  const [isError] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {

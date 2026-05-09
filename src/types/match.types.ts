@@ -24,9 +24,9 @@ export interface Match extends BaseEntity {
   teams: Team[];
   events: MatchEvent[];
   score: Record<string, number>;
-  servingTeamId: string;
-  servingPlayerId: string;
-  startedAt?: string | null; // ISO 8601
-  completedAt?: string | null; // ISO 8601
+  servingTeamId: string | null;   // null during 'setup' — assigned when match starts
+  servingPlayerId: string | null; // null during 'setup' — assigned when match starts
+  startedAt?: string | null;      // ISO 8601
+  completedAt?: string | null;    // ISO 8601
   durationSeconds?: number | null;
 }

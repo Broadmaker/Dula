@@ -1,7 +1,11 @@
 import { View, Text, TouchableOpacity } from "react-native";
-import type { HistoryStackScreenProps } from "@/navigation/types";
+import { useNavigation } from "@react-navigation/native";
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import type { HistoryStackParamList } from "@/navigation/types";
 
-export function MatchHistoryScreen({ navigation }: HistoryStackScreenProps<"MatchHistory">) {
+export function MatchHistoryScreen() {
+  const navigation = useNavigation<NativeStackNavigationProp<HistoryStackParamList, "MatchHistory">>();
+
   return (
     <View className="flex-1 items-center justify-center bg-white p-4">
       <Text className="text-2xl font-heading text-primary">Match History</Text>

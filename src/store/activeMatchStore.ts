@@ -1,7 +1,15 @@
 import { create } from "zustand";
-import type { MatchSnapshot } from "@/types/match.types"; // We might need to define this or use Match
+
+// Shape returned by scoringEngine after every action
+export interface MatchSnapshot {
+  score: Record<string, number>;
+  servingTeamId: string;
+  servingPlayerId: string;
+  timeoutsUsed: Record<string, number>;
+}
 
 interface ActiveMatchState {
+  // State
   matchId: string | null;
   score: Record<string, number>;
   servingTeamId: string | null;
@@ -11,17 +19,14 @@ interface ActiveMatchState {
   timeoutsUsed: Record<string, number>;
 
   // Actions
-  setMatch: (matchId: string, initialScore: Record<string, number>) => void;
-  updateScore: (score: Record<string, number>) => void;
-  setServingTeam: (teamId: string | null) => void;
-  setServingPlayer: (playerId: string | null) => void;
-  incrementTimer: () => void;
+  setMatch: (matchId: string, snapshot: MatchSnapshot) => void;
+  applyEvent: (snapshot: MatchSnapshot) => void; // called after every scoringEngine action
+  tick: () => void;                              // called by timer interval — +1 second
   setRunning: (isRunning: boolean) => void;
-  updateTimeouts: (timeouts: Record<string, number>) => void;
-  reset: () => void;
+  clearMatch: () => void;                        // called on match end or navigate away
 }
 
-export const useActiveMatchStore = create<ActiveMatchState>((set) => ({
+const INITIAL_STATE = {
   matchId: null,
   score: {},
   servingTeamId: null,
@@ -29,37 +34,35 @@ export const useActiveMatchStore = create<ActiveMatchState>((set) => ({
   timerSeconds: 0,
   isRunning: false,
   timeoutsUsed: {},
+};
 
-  setMatch: (matchId, initialScore) =>
+export const useActiveMatchStore = create<ActiveMatchState>((set) => ({
+  ...INITIAL_STATE,
+
+  setMatch: (matchId, snapshot) =>
     set({
       matchId,
-      score: initialScore,
+      score: snapshot.score,
+      servingTeamId: snapshot.servingTeamId,
+      servingPlayerId: snapshot.servingPlayerId,
+      timeoutsUsed: snapshot.timeoutsUsed,
       timerSeconds: 0,
       isRunning: false,
-      timeoutsUsed: {},
     }),
 
-  updateScore: (score) => set({ score }),
+  // Single atomic update — scoringEngine returns full new state, store applies it all at once
+  applyEvent: (snapshot) =>
+    set({
+      score: snapshot.score,
+      servingTeamId: snapshot.servingTeamId,
+      servingPlayerId: snapshot.servingPlayerId,
+      timeoutsUsed: snapshot.timeoutsUsed,
+    }),
 
-  setServingTeam: (servingTeamId) => set({ servingTeamId }),
-
-  setServingPlayer: (servingPlayerId) => set({ servingPlayerId }),
-
-  incrementTimer: () =>
+  tick: () =>
     set((state) => ({ timerSeconds: state.timerSeconds + 1 })),
 
   setRunning: (isRunning) => set({ isRunning }),
 
-  updateTimeouts: (timeoutsUsed) => set({ timeoutsUsed }),
-
-  reset: () =>
-    set({
-      matchId: null,
-      score: {},
-      servingTeamId: null,
-      servingPlayerId: null,
-      timerSeconds: 0,
-      isRunning: false,
-      timeoutsUsed: {},
-    }),
+  clearMatch: () => set(INITIAL_STATE),
 }));

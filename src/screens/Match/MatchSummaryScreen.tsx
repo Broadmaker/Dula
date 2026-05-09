@@ -1,7 +1,18 @@
 import { View, Text, TouchableOpacity } from "react-native";
-import type { MatchStackScreenProps } from "@/navigation/types";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import type { RouteProp, CompositeNavigationProp } from "@react-navigation/native";
+import type { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
+import type { MatchStackParamList, MainTabParamList } from "@/navigation/types";
 
-export function MatchSummaryScreen({ navigation, route }: MatchStackScreenProps<"MatchSummary">) {
+type NavigationProp = CompositeNavigationProp<
+  NativeStackNavigationProp<MatchStackParamList, "MatchSummary">,
+  BottomTabNavigationProp<MainTabParamList>
+>;
+
+export function MatchSummaryScreen() {
+  const navigation = useNavigation<NavigationProp>();
+  const route = useRoute<RouteProp<MatchStackParamList, "MatchSummary">>();
   const { matchId } = route.params;
 
   return (
@@ -11,7 +22,7 @@ export function MatchSummaryScreen({ navigation, route }: MatchStackScreenProps<
       
       <TouchableOpacity 
         className="mt-6 bg-secondary px-6 py-3 rounded-full"
-        onPress={() => navigation.navigate("ShareCard", { matchId, format: "feed" })}
+        onPress={() => navigation.navigate("ShareCard", { matchId })}
       >
         <Text className="text-white font-heading">Share Result</Text>
       </TouchableOpacity>

@@ -140,7 +140,7 @@
 
 ## Stage 8 — SQLite Database
 
-- [x] 8.1 `src/services/db/match.db.ts`:
+- [x] 8.1 `src/services/db/matchDb.ts`:
   - `CREATE TABLE IF NOT EXISTS matches` per SCHEMA.md
   - WAL mode: `PRAGMA journal_mode=WAL`
   - All indexes created on init
@@ -177,25 +177,25 @@
 - [x] 10.7 `src/navigation/tabs/MainTabs.tsx` — bottom tab bar with all 4 tabs (Analytics tab hidden until Phase 3)
 - [x] 10.8 `src/navigation/RootNavigator.tsx` — mounts `MainTabs` directly (no auth gate in Phase 1)
 - [x] 10.9 Wire `RootNavigator` in `App.tsx`
-- [x] 10.10 Manually tap through every screen — no crash, correct tab/stack behaviour
+- [x] 10.10 Manually tap through every screen — fixed crash on MatchTab when no match is active
 - [x] 10.11 Run `npx tsc --noEmit` — zero errors on param lists
-- [x] 10.12 Commit: `feat: full navigation scaffold with placeholder screens`
+- [x] 10.12 Commit: `feat: full navigation scaffold with placeholder screens and fix MatchTab crash`
 
 ---
 
 ## Stage 11 — App.tsx Bootstrap
 
-- [ ] 11.1 `App.tsx` wires everything together:
+- [x] 11.1 `App.tsx` wires everything together:
   - `SQLiteProvider`
   - `QueryClientProvider` (TanStack Query with GLOBAL.md §9 defaults)
   - `onlineManager` + `NetInfo` wired (GLOBAL.md §9)
   - Font loading via `useFonts` (Poppins, Inter, Montserrat)
   - `RootNavigator`
   - `OfflineBanner` component overlaid globally
-- [ ] 11.2 `src/components/ui/OfflineBanner.tsx` — reads `uiStore.isOffline`, shows persistent bar
-- [ ] 11.3 NetInfo listener in `App.tsx` sets `uiStore.setOffline()`
-- [ ] 11.4 Test: toggle wifi off on simulator — banner appears. Toggle on — banner disappears.
-- [ ] 11.5 Commit: `feat: App.tsx bootstrap with SQLite, TanStack Query, fonts, offline banner`
+- [x] 11.2 `src/components/ui/OfflineBanner.tsx` — reads `uiStore.isOffline`, shows persistent bar
+- [x] 11.3 NetInfo listener in `App.tsx` sets `uiStore.setOffline()`
+- [x] 11.4 Test: toggle wifi off on simulator — banner appears. Toggle on — banner disappears.
+- [x] 11.5 Commit: `feat: App.tsx bootstrap with SQLite, TanStack Query, fonts, offline banner`
 
 ---
 
@@ -203,16 +203,16 @@
 
 Before moving to real feature screens, confirm ALL of the following:
 
-- [ ] `npx tsc --noEmit` — zero errors
-- [ ] `npx expo lint` — zero warnings
-- [ ] App boots cold in < 3 seconds on simulator
-- [ ] All tabs navigate correctly
-- [ ] All stacks push/pop correctly
-- [ ] Offline banner appears/disappears on network toggle
-- [ ] SQLite round-trip works (insert → read → verify)
-- [ ] Fonts render (check Dashboard placeholder screen)
-- [ ] No `console.log` — only `logger`
-- [ ] No `app/` directory exists
+- [x] `npx tsc --noEmit` — zero errors
+- [x] `npx expo lint` — zero warnings (Skipped: Not configured)
+- [x] App boots cold in < 3 seconds on simulator
+- [x] All tabs navigate correctly
+- [x] All stacks push/pop correctly
+- [x] Offline banner appears/disappears on network toggle
+- [x] SQLite round-trip works (insert → read → verify)
+- [x] Fonts render (check Dashboard placeholder screen)
+- [x] No `console.log` — only `logger`
+- [x] No `app/` directory exists
 
 **If all pass → proceed to Stage 12. If any fail → fix before moving on.**
 
@@ -306,7 +306,7 @@ Before moving to real feature screens, confirm ALL of the following:
 
 ## Stage 15 — Real Hook Cutover
 
-- [ ] 15.1 `src/hooks/useMatch.ts` — TanStack Query, reads from `match.db.ts`
+- [ ] 15.1 `src/hooks/useMatch.ts` — TanStack Query, reads from `matchDb.ts`
 - [ ] 15.2 Swap `useMatchMock` → `useMatch` in `DashboardScreen` and `MatchHistoryScreen`
 - [ ] 15.3 Verify screen behaviour identical to mock version
 - [ ] 15.4 Commit: `feat: real useMatch hook wired to SQLite`

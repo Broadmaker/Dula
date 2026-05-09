@@ -1,5 +1,4 @@
 import { View, Text, Switch } from "react-native";
-import type { ProfileStackScreenProps } from "@/navigation/types";
 
 export function SettingsScreen() {
   return (
