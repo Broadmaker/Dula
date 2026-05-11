@@ -8,55 +8,36 @@
 
 ## Current Status
 
-**Phase:** 1 — Planning complete, ready to build
-**Last action:** All planning documents created (PROJECT.md, DECISIONS.md, SCHEMA.md, project.config.ts)
-**Date:** May 2026
+**Phase:** 1 — Implementation in progress (Stage 14G complete)
+**Last action:** Implemented Settings and Profile screens (Stage 14G)
+**Date:** May 11, 2026
 
 ---
 
 ## What Was Completed This Session
 
-- [x] Reviewed original DULA roadmap document
-- [x] Reviewed GLOBAL.md v3.3
-- [x] Identified and resolved all conflicts between roadmap and GLOBAL.md
-- [x] Decided database: Firestore (see DECISIONS.md D-001)
-- [x] Closed all open architectural questions (D-001 through D-010)
-- [x] Created `PROJECT.md` — GLOBAL-compliant, all conflicts resolved
-- [x] Created `DECISIONS.md` — all decisions logged with rationale
-- [x] Created `SCHEMA.md` — Firestore + SQLite + sync queue schemas
-- [x] Created `project.config.ts` — session bootstrap file
-- [x] Created `CONTEXT.md` — this file
-- [x] **Pivoted Phase 1:** offline-first scoring + social share card (see D-009, D-010)
-- [x] Live sync deferred to Phase 3, toggle visible but disabled from Phase 1
+- [x] Phase 1 Scaffold (Stages 1–11)
+- [x] Scoring Engine logic + unit tests (Stage 12)
+- [x] Atomic UI Primitives (Button, Card, LoadingSpinner, EmptyState, ErrorState) (Stage 13)
+- [x] Dashboard Screen & MatchCard component (Stage 14A)
+- [x] Match Setup Screen with SQLite integration (Stage 14B)
+- [x] Live Scoring Screen with real-time updates and persistence (Stage 14C)
+- [x] Match Summary Screen with winner banner and statistics (Stage 14D)
+- [x] Share Card components and screen with sharing service (Stage 14E)
+- [x] Match History and Match Detail screens (Stage 14F)
+- [x] Settings and Profile screens with local stats (Stage 14G)
 
 ---
 
 ## Next Action
 
-> When the user says "let's start building" — begin here.
+> Starting Stage 15: Real Hook Cutover
 
-**Step 1 of Phase 1:** Expo project bootstrap
+**Step 1 of Stage 15:** Build `src/hooks/useMatch.ts`:
 
-Follow GLOBAL.md §18 (Enforced Build Workflow). Write plan to `tasks/todo.md` first, check in before touching code.
-
-Bootstrap checklist:
-
-- `npx create-expo-app dula --template blank-typescript`
-- Configure `tsconfig.json` path aliases (`@/`)
-- Configure `babel.config.js` with `babel-plugin-module-resolver`
-- Install dependencies:
-  - Navigation: `@react-navigation/native`, `@react-navigation/native-stack`, `@react-navigation/bottom-tabs`
-  - State: `zustand`, `@tanstack/react-query`
-  - Styling: `nativewind`, `tailwindcss`
-  - DB: `expo-sqlite`
-  - Share: `react-native-view-shot`, `expo-sharing`, `expo-media-library`
-  - Haptics: `expo-haptics`
-  - Animations: `react-native-reanimated`, `lottie-react-native`
-  - Fonts: `@expo-google-fonts/poppins`, `@expo-google-fonts/inter`, `@expo-google-fonts/montserrat`
-- Scaffold full folder structure per PROJECT.md §6
-- Write `src/navigation/types.ts` with all param lists
-- Wire `RootNavigator` (no auth gate — mounts `MainTabs` directly in Phase 1)
-- Initialize SQLite (`matches` table only — no `mutation_queue` until Phase 2)
+- [ ] Create `useMatch` hook using TanStack Query
+- [ ] Connect `useMatch` to `matchDb.ts` for real SQLite fetching
+- [ ] Swap `useMatchMock` for `useMatch` in `DashboardScreen` and `MatchHistoryScreen`
 
 ---
 

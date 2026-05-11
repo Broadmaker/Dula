@@ -40,7 +40,7 @@
 | Platform         | iOS + Android (React Native / Expo)              |
 | Backend          | Firebase — Auth, Firestore, Storage, Functions   |
 | Database         | Firestore (cloud) + expo-sqlite Next API (local) |
-| Current Phase    | Planning                                         |
+| Current Phase    | Phase 1 — Implementation (Stage 13)              |
 | Repo             | GitHub (link TBD)                                |
 | Expo Account     | Ready                                            |
 | Firebase Project | Ready                                            |

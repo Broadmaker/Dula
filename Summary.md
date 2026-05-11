@@ -280,22 +280,370 @@ feat: implement scoring engine with full jest coverage (Stage 12)
 - Update Match and MatchSnapshot types to include serverNumber (1 | 2)
 - Add comprehensive test suite in src/features/scoring/scoringEngine.test.ts
 - Fix: getInitialMatchState now correctly starts at 0-0 for re-calculation consistency
+
+---
+
+## Session 004 — UI Primitives (Stage 13)
+
+**Date:** May 11, 2026
+**Goal:** Build atomic UI components in `src/components/ui/` using NativeWind v4.
+
+### Stages Completed
+
+| Stage | Description   | Status  |
+| ----- | ------------- | ------- |
+| 13    | UI Primitives | ✅ Done |
+
+### Files Created / Modified
+
+**UI Components:**
+
+- `src/components/ui/Button.tsx` — primary / secondary / ghost / error variants, multiple sizes, loading state
+- `src/components/ui/Card.tsx` — dark mode aware surface container
+- `src/components/ui/LoadingSpinner.tsx` — themed activity indicator
+- `src/components/ui/EmptyState.tsx` — message + CTA component
+- `src/components/ui/ErrorState.tsx` — error display + retry component
+
+### Bugs Found & Fixed
+
+| #   | File           | Bug                                                                 | Fix                                                       |
+| --- | -------------- | ------------------------------------------------------------------- | --------------------------------------------------------- |
+| 1   | Various UI files | `import { styled } from "nativewind"` failed in v4                  | Removed `styled` and used standard components with `className` prop. |
+
+### Verification Results
+
+| Check               | Result      |
+| ------------------- | ----------- |
+| `npx tsc --noEmit`  | ✅ 0 errors |
+
+### Commit
+
+```
+feat: implement UI primitive components (Stage 13)
+
+- Create Button.tsx with primary, secondary, ghost, and error variants
+- Create Card.tsx with dark mode support
+- Create LoadingSpinner.tsx with full-screen and themed support
+- Create EmptyState.tsx for empty list scenarios
+- Create ErrorState.tsx for error handling UI
+- All components use NativeWind v4 className patterns
+- Verify zero TypeScript errors
+
+---
+
+## Session 005 — Dashboard & MatchCard (Stage 14A)
+
+**Date:** May 11, 2026
+**Goal:** Implement the Dashboard screen and its primary list item component, MatchCard.
+
+### Stages Completed
+
+| Stage | Description | Status |
+| ----- | ----------- | ------ |
+| 14A   | Dashboard   | ✅ Done |
+
+### Files Created / Modified
+
+**UI Components:**
+
+- `src/components/features/matches/MatchCard.tsx` — High-contrast list item showing match type, date, team names, scores, and status.
+
+**Screens:**
+
+- `src/screens/Home/DashboardScreen.tsx` — Implemented recent matches list with `FlatList`, `LoadingSpinner`, `EmptyState`, and `ErrorState`. Added "Start New Match" button and navigation logic for active vs. completed matches.
+
+### Verification Results
+
+| Check               | Result      |
+| ------------------- | ----------- |
+| `npx tsc --noEmit`  | ✅ 0 errors |
+
+### Commit
+
+```
+feat: implement Dashboard and MatchCard (Stage 14A)
+
+- Create MatchCard component with high-contrast scores and status indicators
+- Update DashboardScreen to fetch and display recent matches using useMatchMock
+- Add loading, empty, and error states to Dashboard
+- Implement navigation logic: active matches -> LiveScoring, completed -> MatchDetail
+- Add "Start New Match" CTA to Dashboard header
+- Verify zero TypeScript errors
+
+---
+
+## Session 006 — Match Setup (Stage 14B)
+
+**Date:** May 11, 2026
+**Goal:** Implement the Match Setup screen with form controls and SQLite integration.
+
+### Stages Completed
+
+| Stage | Description | Status |
+| ----- | ----------- | ------ |
+| 14B   | Match Setup | ✅ Done |
+
+### Files Created / Modified
+
+**Database:**
+
+- `src/services/db/matchDb.ts` — Updated schema and CRUD to support `server_number`.
+
+**Types:**
+
+- `src/types/match.types.ts` — Added `serverNumber: 1 | 2` to `Match` entity.
+
+**Screens:**
+
+- `src/screens/Home/MatchSetupScreen.tsx` — Implemented form with match type selection (singles/doubles), score limit (11, 15, 21), win-by-two and rally scoring toggles, and team name inputs. Integrated with `matchDb` to create new matches in SQLite.
+
+**Mocks & Tests:**
+
+- `src/mocks/match.mock.ts` — Updated to include `serverNumber`.
+- `src/features/scoring/scoringEngine.test.ts` — Updated to include `serverNumber`.
+
+**UI Components:**
+
+- `src/components/ui/Button.tsx` — Updated to use `children` for label text.
+- `src/components/ui/EmptyState.tsx` — Fixed `Button` usage.
+- `src/components/ui/ErrorState.tsx` — Fixed `Button` usage.
+
+### Verification Results
+
+| Check               | Result      |
+| ------------------- | ----------- |
+| `npx tsc --noEmit`  | ✅ 0 errors |
+
+### Commit
+
+```
+feat: implement Match Setup and update schema (Stage 14B)
+
+- Add serverNumber to Match type and SQLite schema
+- Implement MatchSetupScreen with full configuration form
+- Integrate MatchSetup with matchDb for real SQLite persistence
+- Fix Button component to use children for better flexibility
+- Update all UI components and screens to match new Button API
+- Update mocks and tests to reflect schema changes
+- Verify zero TypeScript errors
+
+---
+
+## Session 007 — Live Scoring (Stage 14C)
+
+**Date:** May 11, 2026
+**Goal:** Implement the core Live Scoring screen with real-time scoreboard and scoring engine integration.
+
+### Stages Completed
+
+| Stage | Description  | Status  |
+| ----- | ------------ | ------- |
+| 14C   | Live Scoring | ✅ Done |
+
+### Files Created / Modified
+
+**UI Components:**
+
+- `src/components/features/scoring/TeamCard.tsx` — Large tap targets for scoring, shows team name, score, and server number.
+- `src/components/features/scoring/MatchTimer.tsx` — Displays match duration.
+- `src/components/features/scoring/ActionBar.tsx` — Undo, Timeout, and End Match buttons.
+
+**Screens:**
+
+- `src/screens/Match/LiveScoringScreen.tsx` — Core scoring screen. Wires `activeMatchStore` with `scoringEngine` and `matchDb`. Handles points, faults (long press), undo, timeout, and win condition detection.
+
+### Verification Results
+
+| Check               | Result      |
+| ------------------- | ----------- |
+| `npx tsc --noEmit`  | ✅ 0 errors |
+
+### Commit
+
+```
+feat: implement Live Scoring (Stage 14C)
+
+- Create TeamCard, MatchTimer, and ActionBar components for scoreboard UI
+- Implement LiveScoringScreen with activeMatchStore and scoringEngine integration
+- Add haptic feedback for scoring actions
+- Implement SQLite persistence for every scoring event
+- Add Undo and Timeout functionality
+- Add win condition detection and auto-navigation to summary
+- Verify zero TypeScript errors
+
+---
+
+## Session 008 — Match Summary (Stage 14D)
+
+**Date:** May 11, 2026
+**Goal:** Implement the Match Summary screen with results, stats, and Share CTA.
+
+### Stages Completed
+
+| Stage | Description   | Status  |
+| ----- | ------------- | ------- |
+| 14D   | Match Summary | ✅ Done |
+
+### Files Created / Modified
+
+**Screens:**
+
+- `src/screens/Match/MatchSummaryScreen.tsx` — Implemented results screen with winner banner, final score display, and match statistics (duration, total points, etc.). Added "Share Result" and "Done" CTAs.
+
+### Verification Results
+
+| Check               | Result      |
+| ------------------- | ----------- |
+| `npx tsc --noEmit`  | ✅ 0 errors |
+
+### Commit
+
+```
+feat: implement Match Summary (Stage 14D)
+
+- Create MatchSummaryScreen with winner banner and high-contrast score display
+- Add match statistics breakdown (duration, total points, match type)
+- Implement "Share Result" CTA navigating to ShareCardScreen
+- Implement "Done" CTA navigating back to Dashboard
+- Verify zero TypeScript errors
+
+---
+
+## Session 009 — Share Card (Stage 14E)
+
+**Date:** May 11, 2026
+**Goal:** Implement visual share cards (Feed/Story) and image capture/sharing services.
+
+### Stages Completed
+
+| Stage | Description | Status |
+| ----- | ----------- | ------ |
+| 14E   | Share Card  | ✅ Done |
+
+### Files Created / Modified
+
+**UI Components:**
+
+- `src/components/features/share/ShareCardFeed.tsx` — 1:1 square card for Instagram/Facebook feed.
+- `src/components/features/share/ShareCardStory.tsx` — 9:16 vertical card for Instagram/TikTok stories.
+
+**Services:**
+
+- `src/services/share/shareCard.service.ts` — Core logic for `captureRef`, `Sharing.shareAsync`, and `MediaLibrary.saveToLibraryAsync`.
+
+**Screens:**
+
+- `src/screens/Match/ShareCardScreen.tsx` — Implemented format toggle, visual preview, and actions for sharing and saving.
+
+### Verification Results
+
+| Check               | Result      |
+| ------------------- | ----------- |
+| `npx tsc --noEmit`  | ✅ 0 errors |
+
+### Commit
+
+```
+feat: implement visual share cards and sharing service (Stage 14E)
+
+- Create ShareCardFeed (1:1) and ShareCardStory (9:16) components
+- Implement shareCard.service.ts with image capture, sharing, and gallery save
+- Build ShareCardScreen with preview, format toggle, and action buttons
+- Integrate buildShareCardData util for consistent visual data
+- Verify zero TypeScript errors
+
+---
+
+## Session 010 — History (Stage 14F)
+
+**Date:** May 11, 2026
+**Goal:** Implement Match History and Match Detail screens with SQLite integration.
+
+### Stages Completed
+
+| Stage | Description | Status  |
+| ----- | ----------- | ------- |
+| 14F   | History     | ✅ Done |
+
+### Files Created / Modified
+
+**Screens:**
+
+- `src/screens/History/MatchHistoryScreen.tsx` — Implemented list of all past matches from SQLite with `FlatList`, `RefreshControl`, and `MatchCard`.
+- `src/screens/History/MatchDetailScreen.tsx` — Implemented detailed breakdown of a past match with stats grid, winner banner, and "Reshare" functionality.
+
+### Verification Results
+
+| Check               | Result      |
+| ------------------- | ----------- |
+| `npx tsc --noEmit`  | ✅ 0 errors |
+
+### Commit
+
+```
+feat: implement Match History and Match Detail (Stage 14F)
+
+- Create MatchHistoryScreen with SQLite-backed FlatList and pull-to-refresh
+- Build MatchDetailScreen with stats breakdown and reshare functionality
+- Integrate MatchCard in history list
+- Add navigation between History stack and Match stack (for resharing)
+- Verify zero TypeScript errors
+
+---
+
+## Session 011 — Settings & Profile (Stage 14G)
+
+**Date:** May 11, 2026
+**Goal:** Implement Settings and Profile screens with local persistence placeholders and stats.
+
+### Stages Completed
+
+| Stage | Description | Status |
+| ----- | ----------- | ------ |
+| 14G   | Settings & Profile | ✅ Done |
+
+### Files Created / Modified
+
+**Screens:**
+
+- `src/screens/Profile/SettingsScreen.tsx` — Implemented Preferences (Live Sync placeholder, Dark Mode, Haptics) and About sections.
+- `src/screens/Profile/ProfileScreen.tsx` — Implemented local profile with editable display name, match statistics (games played), and quick links to settings and export.
+
+### Verification Results
+
+| Check               | Result      |
+| ------------------- | ----------- |
+| `npx tsc --noEmit`  | ✅ 0 errors |
+
+### Commit
+
+```
+feat: implement Settings and Profile screens (Stage 14G)
+
+- Create SettingsScreen with UI placeholders for Live Sync and theme preferences
+- Build ProfileScreen with local display name editing and match stats summary
+- Integrate Profile stats with real SQLite data (total games played)
+- Add "Export Data" and "Sign In" placeholders
+- Finalize all Phase 1 feature screens
+- Verify zero TypeScript errors
 ```
 
 ---
 
-## Next Session — Stage 13: UI Primitives
+## Next Session — Stage 15: Real Hook Cutover
 
 **Start here:**
 
-Build atomic UI components in `src/components/ui/` using NativeWind v4:
+Build `src/hooks/useMatch.ts` using TanStack Query to replace all remaining mock data with real SQLite state.
 
-- `Button.tsx` (Primary, Secondary, Ghost)
-- `Card.tsx`
-- `LoadingSpinner.tsx`
-- `EmptyState.tsx`
-- `ErrorState.tsx`
-
+---
+---
+---
+---
+---
+---
+---
+---
 ---
 
 _SUMMARY.md — append only. Never delete previous sessions._

@@ -39,6 +39,7 @@ const createBaseMatch = (type: "singles" | "doubles" = "doubles"): Match => ({
         ],
   events: [],
   score: { team1: 0, team2: 0 },
+  serverNumber: 1,
   servingTeamId: "team1",
   servingPlayerId: "p1",
   durationSeconds: null,

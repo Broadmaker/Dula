@@ -233,6 +233,7 @@ CREATE TABLE IF NOT EXISTS matches (
   events_json     TEXT    NOT NULL DEFAULT '[]', -- JSON: MatchEvent[]
   score_json      TEXT    NOT NULL DEFAULT '{}', -- JSON: Record<teamId, number>
 
+  server_number     INTEGER NOT NULL DEFAULT 1,
   serving_team_id   TEXT,
   serving_player_id TEXT,
   started_at        TEXT,
@@ -414,4 +415,6 @@ Already defined inline in each `CREATE TABLE` block above. Summary:
 ---
 
 _Last updated: May 2026 · DULA dev team_
+_Always update this file before changing any table or collection in code._
+: May 2026 · DULA dev team_
 _Always update this file before changing any table or collection in code._

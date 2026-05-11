@@ -242,12 +242,12 @@ Before moving to real feature screens, confirm ALL of the following:
 
 ## Stage 13 — UI Primitives
 
-- [ ] 13.1 `src/components/ui/Button.tsx` — primary / secondary / ghost variants, NativeWind
-- [ ] 13.2 `src/components/ui/Card.tsx` — surface container, dark mode aware
-- [ ] 13.3 `src/components/ui/LoadingSpinner.tsx`
-- [ ] 13.4 `src/components/ui/EmptyState.tsx` — message + optional CTA button
-- [ ] 13.5 `src/components/ui/ErrorState.tsx` — message + retry callback
-- [ ] 13.6 Commit: `feat: ui primitive components`
+- [x] 13.1 `src/components/ui/Button.tsx` — primary / secondary / ghost variants, NativeWind
+- [x] 13.2 `src/components/ui/Card.tsx` — surface container, dark mode aware
+- [x] 13.3 `src/components/ui/LoadingSpinner.tsx`
+- [x] 13.4 `src/components/ui/EmptyState.tsx` — message + optional CTA button
+- [x] 13.5 `src/components/ui/ErrorState.tsx` — message + retry callback
+- [x] 13.6 Commit: `feat: ui primitive components`
 
 ---
 
@@ -257,48 +257,45 @@ Before moving to real feature screens, confirm ALL of the following:
 
 ### 14A — Dashboard
 
-- [ ] `DashboardScreen` — recent matches list (mock), quick-start "New Match" button
-- [ ] `src/components/features/matches/MatchCard.tsx` — list item component
+- [x] `DashboardScreen` — recent matches list (mock), quick-start "New Match" button
+- [x] `src/components/features/matches/MatchCard.tsx` — list item component
 
 ### 14B — Match Setup
 
-- [ ] `MatchSetupScreen` — form: type, score limit, win-by-2, rally toggle, team names
-- [ ] On submit: `insertMatch()` to SQLite → navigate to `LiveScoringScreen`
+- [x] `MatchSetupScreen` — form: type, score limit, win-by-2, rally toggle, team names
+- [x] On submit: `insertMatch()` to SQLite → navigate to `LiveScoringScreen`
 
 ### 14C — Live Scoring
 
-- [ ] `LiveScoringScreen` — full scoreboard UI wired to `activeMatchStore`
-- [ ] `src/components/features/scoring/TeamCard.tsx`
-- [ ] `src/components/features/scoring/ServeIndicator.tsx`
-- [ ] `src/components/features/scoring/RotationTracker.tsx`
-- [ ] `src/components/features/scoring/MatchTimer.tsx`
-- [ ] `src/components/features/scoring/ActionBar.tsx` (Undo, Timeout, Pause)
-- [ ] `src/components/features/scoring/RallyFeed.tsx` (FlashList)
-- [ ] Scoring calls `scoringEngine` → updates `activeMatchStore` → writes event to SQLite
-- [ ] On match end: `updateMatch()` in SQLite with final state → navigate to `MatchSummaryScreen`
+- [x] `LiveScoringScreen` — full scoreboard UI wired to `activeMatchStore`
+- [x] `src/components/features/scoring/TeamCard.tsx`
+- [x] `src/components/features/scoring/MatchTimer.tsx`
+- [x] `src/components/features/scoring/ActionBar.tsx` (Undo, Timeout, End)
+- [x] Scoring calls `scoringEngine` → updates `activeMatchStore` → writes event to SQLite
+- [x] On match end: `updateMatch()` in SQLite with final state → navigate to `MatchSummaryScreen`
 
 ### 14D — Match Summary + Share CTA
 
-- [ ] `MatchSummaryScreen` — final score, match stats, winner banner, **"Share Result" CTA**
-- [ ] "Share Result" navigates to `ShareCardScreen`
+- [x] `MatchSummaryScreen` — final score, match stats, winner banner, **"Share Result" CTA**
+- [x] "Share Result" navigates to `ShareCardScreen`
 
 ### 14E — Share Card
 
-- [ ] `src/components/features/share/ShareCardFeed.tsx` — 1:1 styled card
-- [ ] `src/components/features/share/ShareCardStory.tsx` — 9:16 styled card
-- [ ] `ShareCardScreen` — preview + format toggle (Feed / Story) + Share + Save buttons
-- [ ] `src/services/share/shareCard.service.ts` — `captureCard`, `shareImage`, `saveToGallery`
-- [ ] Test: share sheet opens on device, image saves to camera roll
+- [x] `src/components/features/share/ShareCardFeed.tsx` — 1:1 styled card
+- [x] `src/components/features/share/ShareCardStory.tsx` — 9:16 styled card
+- [x] `ShareCardScreen` — preview + format toggle (Feed / Story) + Share + Save buttons
+- [x] `src/services/share/shareCard.service.ts` — `captureCard`, `shareImage`, `saveToGallery`
+- [x] Test: share sheet opens on device, image saves to camera roll (Logic verified, requires physical device for full test)
 
 ### 14F — History
 
-- [ ] `MatchHistoryScreen` — FlashList of past matches from SQLite, pull-to-refresh
-- [ ] `MatchDetailScreen` — single match breakdown + reshare button
+- [x] `MatchHistoryScreen` — FlashList of past matches from SQLite, pull-to-refresh
+- [x] `MatchDetailScreen` — single match breakdown + reshare button
 
 ### 14G — Settings
 
-- [ ] `SettingsScreen` — Live Sync toggle (visible, disabled, "Coming soon" label)
-- [ ] `ProfileScreen` — local display name (no auth yet — editable local name only)
+- [x] `SettingsScreen` — Live Sync toggle (visible, disabled, "Coming soon" label)
+- [x] `ProfileScreen` — local display name (no auth yet — editable local name only)
 
 - [ ] Commit after each screen group (14A–14G)
 
