@@ -5,6 +5,7 @@ export interface MatchSnapshot {
   score: Record<string, number>;
   servingTeamId: string;
   servingPlayerId: string;
+  serverNumber: 1 | 2;
   timeoutsUsed: Record<string, number>;
 }
 
@@ -14,9 +15,11 @@ interface ActiveMatchState {
   score: Record<string, number>;
   servingTeamId: string | null;
   servingPlayerId: string | null;
+  serverNumber: 1 | 2;
   timerSeconds: number;
   isRunning: boolean;
   timeoutsUsed: Record<string, number>;
+// ... rest of file (using replace to only change the relevant part)
 
   // Actions
   setMatch: (matchId: string, snapshot: MatchSnapshot) => void;
@@ -31,6 +34,7 @@ const INITIAL_STATE = {
   score: {},
   servingTeamId: null,
   servingPlayerId: null,
+  serverNumber: 1 as 1 | 2,
   timerSeconds: 0,
   isRunning: false,
   timeoutsUsed: {},
@@ -45,6 +49,7 @@ export const useActiveMatchStore = create<ActiveMatchState>((set) => ({
       score: snapshot.score,
       servingTeamId: snapshot.servingTeamId,
       servingPlayerId: snapshot.servingPlayerId,
+      serverNumber: snapshot.serverNumber,
       timeoutsUsed: snapshot.timeoutsUsed,
       timerSeconds: 0,
       isRunning: false,
@@ -56,6 +61,7 @@ export const useActiveMatchStore = create<ActiveMatchState>((set) => ({
       score: snapshot.score,
       servingTeamId: snapshot.servingTeamId,
       servingPlayerId: snapshot.servingPlayerId,
+      serverNumber: snapshot.serverNumber,
       timeoutsUsed: snapshot.timeoutsUsed,
     }),
 

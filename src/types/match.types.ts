@@ -26,6 +26,7 @@ export interface Match extends BaseEntity {
   score: Record<string, number>;
   servingTeamId: string | null;   // null during 'setup' — assigned when match starts
   servingPlayerId: string | null; // null during 'setup' — assigned when match starts
+  serverNumber: 1 | 2;            // 1 or 2 (in doubles)
   startedAt?: string | null;      // ISO 8601
   completedAt?: string | null;    // ISO 8601
   durationSeconds?: number | null;

@@ -220,23 +220,23 @@ Before moving to real feature screens, confirm ALL of the following:
 
 ## Stage 12 — Scoring Engine (Pure Logic)
 
-- [ ] 12.1 `src/features/scoring/scoringEngine.ts`:
-  - `addPoint(state, teamId)` → new state
-  - `addFault(state, playerId)` → new state + serve rotation
-  - `callTimeout(state, teamId)` → new state
-  - `undo(state)` → previous state (pop last event)
-  - `applySideSwitch(state)` → new state
-  - `checkWinCondition(state)` → `{ winner: Team | null }`
-  - `getInitialMatchState(config: MatchConfig)` → initial state
-- [ ] 12.2 Jest unit tests — `scoringEngine.test.ts`:
-  - Singles serve rotation
-  - Doubles serve rotation (both players serve before side-out)
-  - First game one-fault rule
-  - Undo restores previous state
-  - Win condition detected at score limit
-  - Win-by-two holds until 2-point gap
-- [ ] 12.3 `npx jest` — all tests pass
-- [ ] 12.4 Commit: `feat: scoring engine with full jest coverage`
+- [x] 12.1 `src/features/scoring/scoringEngine.ts`:
+  - [x] `addPoint(state, teamId)` → new state
+  - [x] `addFault(state, playerId)` → new state + serve rotation
+  - [x] `callTimeout(state, teamId)` → new state
+  - [x] `undo(state)` → previous state (pop last event)
+  - [x] `applySideSwitch(state)` → new state
+  - [x] `checkWinCondition(state)` → `{ winner: Team | null }`
+  - [x] `getInitialMatchState(config: MatchConfig)` → initial state
+- [x] 12.2 Jest unit tests — `scoringEngine.test.ts`:
+  - [x] Singles serve rotation
+  - [x] Doubles serve rotation (both players serve before side-out)
+  - [x] First game one-fault rule
+  - [x] Undo restores previous state
+  - [x] Win condition detected at score limit
+  - [x] Win-by-two holds until 2-point gap
+- [x] 12.3 `npx jest` — all tests pass
+- [x] 12.4 Commit: `feat: scoring engine with full jest coverage`
 
 ---
 
