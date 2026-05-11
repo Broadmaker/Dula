@@ -5,7 +5,8 @@ export interface MatchSnapshot {
   score: Record<string, number>;
   servingTeamId: string;
   servingPlayerId: string;
-  serverNumber: 1 | 2;
+  serverNumber: number;
+  isFirstServer: boolean;
   timeoutsUsed: Record<string, number>;
 }
 
@@ -15,18 +16,18 @@ interface ActiveMatchState {
   score: Record<string, number>;
   servingTeamId: string | null;
   servingPlayerId: string | null;
-  serverNumber: 1 | 2;
+  serverNumber: number;
+  isFirstServer: boolean;
   timerSeconds: number;
   isRunning: boolean;
   timeoutsUsed: Record<string, number>;
-// ... rest of file (using replace to only change the relevant part)
 
   // Actions
   setMatch: (matchId: string, snapshot: MatchSnapshot) => void;
-  applyEvent: (snapshot: MatchSnapshot) => void; // called after every scoringEngine action
-  tick: () => void;                              // called by timer interval — +1 second
+  applyEvent: (snapshot: MatchSnapshot) => void;
+  tick: () => void;
   setRunning: (isRunning: boolean) => void;
-  clearMatch: () => void;                        // called on match end or navigate away
+  clearMatch: () => void;
 }
 
 const INITIAL_STATE = {
@@ -34,7 +35,8 @@ const INITIAL_STATE = {
   score: {},
   servingTeamId: null,
   servingPlayerId: null,
-  serverNumber: 1 as 1 | 2,
+  serverNumber: 1,
+  isFirstServer: false,
   timerSeconds: 0,
   isRunning: false,
   timeoutsUsed: {},
@@ -50,18 +52,19 @@ export const useActiveMatchStore = create<ActiveMatchState>((set) => ({
       servingTeamId: snapshot.servingTeamId,
       servingPlayerId: snapshot.servingPlayerId,
       serverNumber: snapshot.serverNumber,
+      isFirstServer: snapshot.isFirstServer,
       timeoutsUsed: snapshot.timeoutsUsed,
       timerSeconds: 0,
       isRunning: false,
     }),
 
-  // Single atomic update — scoringEngine returns full new state, store applies it all at once
   applyEvent: (snapshot) =>
     set({
       score: snapshot.score,
       servingTeamId: snapshot.servingTeamId,
       servingPlayerId: snapshot.servingPlayerId,
       serverNumber: snapshot.serverNumber,
+      isFirstServer: snapshot.isFirstServer,
       timeoutsUsed: snapshot.timeoutsUsed,
     }),
 
