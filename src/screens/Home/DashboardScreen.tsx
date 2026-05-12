@@ -1,6 +1,9 @@
 import React from "react";
-import { View, Text, FlatList, ScrollView, RefreshControl } from "react-native";
-import { useNavigation, CompositeNavigationProp } from "@react-navigation/native";
+import { View, Text, FlatList } from "react-native";
+import {
+  useNavigation,
+  CompositeNavigationProp,
+} from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import type { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
 
@@ -11,12 +14,7 @@ import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { ErrorState } from "@/components/ui/ErrorState";
 import { Match } from "@/types/match.types";
-import type {
-  MainTabParamList,
-  HomeStackParamList,
-  MatchStackParamList,
-  HistoryStackParamList,
-} from "@/navigation/types";
+import type { MainTabParamList, HomeStackParamList } from "@/navigation/types";
 
 type DashboardNavigationProp = CompositeNavigationProp<
   NativeStackNavigationProp<HomeStackParamList, "Dashboard">,
@@ -25,7 +23,7 @@ type DashboardNavigationProp = CompositeNavigationProp<
 
 export function DashboardScreen() {
   const navigation = useNavigation<DashboardNavigationProp>();
-  const { data: matches, isLoading, isError, isEmpty } = useMatchMock();
+  const { data: matches, isLoading, isError } = useMatchMock();
 
   const handleMatchPress = (match: Match) => {
     if (match.status === "active") {
@@ -59,7 +57,7 @@ export function DashboardScreen() {
   }
 
   return (
-    <View className="flex-1 bg-background dark:bg-background-dark">
+    <View className="flex-1 bg-white dark:bg-[#121212]">
       <FlatList
         data={matches}
         keyExtractor={(item) => item.uuid}
@@ -72,14 +70,14 @@ export function DashboardScreen() {
             <Text className="text-base font-body text-gray-500 dark:text-gray-400">
               Ready for your next match?
             </Text>
-            
+
             <Button
               className="mt-6"
               onPress={() => navigation.navigate("MatchSetup")}
             >
               Start New Match
             </Button>
-            
+
             <Text className="text-xl font-heading text-black dark:text-white mt-10 mb-4">
               Recent Matches
             </Text>

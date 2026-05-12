@@ -1,14 +1,22 @@
 import React, { useEffect, useState, useRef } from "react";
-import { View, Text, ScrollView, SafeAreaView, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  SafeAreaView,
+  TouchableOpacity,
+} from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import type { RouteProp, CompositeNavigationProp } from "@react-navigation/native";
+import type {
+  RouteProp,
+  CompositeNavigationProp,
+} from "@react-navigation/native";
 import type { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
 import { useSQLiteContext } from "expo-sqlite";
 
 import type { MatchStackParamList, MainTabParamList } from "@/navigation/types";
 import { matchDb } from "@/services/db/matchDb";
-import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { Match } from "@/types/match.types";
@@ -59,7 +67,7 @@ export function ShareCardScreen() {
   const handleShare = async () => {
     setIsCapturing(true);
     try {
-      const uri = await shareService.captureCard(cardRef.current);
+      const uri = await shareService.captureCard(cardRef);
       if (uri) {
         await shareService.shareImage(uri);
       }
@@ -71,7 +79,7 @@ export function ShareCardScreen() {
   const handleSave = async () => {
     setIsCapturing(true);
     try {
-      const uri = await shareService.captureCard(cardRef.current);
+      const uri = await shareService.captureCard(cardRef);
       if (uri) {
         await shareService.saveToGallery(uri);
       }
@@ -84,12 +92,9 @@ export function ShareCardScreen() {
 
   if (!match || !cardData) {
     return (
-      <SafeAreaView className="flex-1 items-center justify-center bg-background dark:bg-background-dark p-4">
+      <SafeAreaView className="flex-1 items-center justify-center bg-white dark:bg-[#121212] p-4">
         <Text className="text-xl font-heading text-error">Match not found</Text>
-        <Button
-          className="mt-6"
-          onPress={() => navigation.goBack()}
-        >
+        <Button className="mt-6" onPress={() => navigation.goBack()}>
           Go Back
         </Button>
       </SafeAreaView>
@@ -97,7 +102,7 @@ export function ShareCardScreen() {
   }
 
   return (
-    <SafeAreaView className="flex-1 bg-background dark:bg-background-dark">
+    <SafeAreaView className="flex-1 bg-white dark:bg-[#121212]">
       <ScrollView className="flex-1" contentContainerStyle={{ padding: 20 }}>
         <Text className="text-3xl font-heading text-black dark:text-white mb-6">
           Share Card
@@ -129,13 +134,13 @@ export function ShareCardScreen() {
           <Text className="text-xs font-body text-gray-400 uppercase tracking-widest mb-4">
             Preview
           </Text>
-          
-          <View 
+
+          <View
             className="w-full shadow-2xl overflow-hidden rounded-3xl bg-primary"
-            style={{ 
+            style={{
               elevation: 10,
               // For "story" we need to scale down the preview to fit screen
-              maxHeight: format === "story" ? 450 : undefined 
+              maxHeight: format === "story" ? 450 : undefined,
             }}
           >
             {/* The actual view we capture */}
@@ -160,7 +165,7 @@ export function ShareCardScreen() {
           >
             Share to Social
           </Button>
-          
+
           <Button
             variant="secondary"
             size="lg"
