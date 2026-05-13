@@ -6,9 +6,14 @@ export interface ShareCardData {
   finalScore: string;
   teamAName: string;
   teamBName: string;
+  scoreA: number;
+  scoreB: number;
+  isWinnerA: boolean;
+  isWinnerB: boolean;
   matchType: string;
   duration: string;
   date: string;
+  scoreLimit: number;
 }
 
 /**
@@ -29,11 +34,16 @@ export const buildShareCardData = (match: Match): ShareCardData => {
 
   return {
     winnerName: scoreA !== scoreB ? `${winnerName} Wins!` : "Draw",
-    finalScore: `${scoreA} — ${scoreB}`,
+    finalScore: `${scoreA} · ${scoreB}`,
     teamAName: teamA.name,
     teamBName: teamB.name,
+    scoreA,
+    scoreB,
+    isWinnerA: scoreA > scoreB,
+    isWinnerB: scoreB > scoreA,
     matchType: match.type.charAt(0).toUpperCase() + match.type.slice(1),
     duration: match.durationSeconds ? formatDuration(match.durationSeconds) : "0:00",
     date: match.completedAt ? formatMatchDate(match.completedAt) : "Unknown Date",
+    scoreLimit: match.scoreLimit,
   };
 };

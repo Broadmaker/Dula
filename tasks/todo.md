@@ -22,55 +22,55 @@
 
 ## Stage 2 — Install Dependencies
 
-- [x] 2.1 Navigation:
+- [ ] 2.1 Navigation:
   ```bash
   npx expo install @react-navigation/native @react-navigation/native-stack @react-navigation/bottom-tabs react-native-screens react-native-safe-area-context
   ```
-- [x] 2.2 Styling:
+- [ ] 2.2 Styling:
   ```bash
   npx expo install nativewind tailwindcss
   npx tailwindcss init
   ```
-- [x] 2.3 State:
+- [ ] 2.3 State:
   ```bash
   npx expo install zustand @tanstack/react-query
   ```
-- [x] 2.4 Local DB:
+- [ ] 2.4 Local DB:
   ```bash
   npx expo install expo-sqlite
   ```
-- [x] 2.5 Share card:
+- [ ] 2.5 Share card:
   ```bash
   npx expo install react-native-view-shot expo-sharing expo-media-library
   ```
-- [x] 2.6 Haptics + Audio:
+- [ ] 2.6 Haptics + Audio:
   ```bash
   npx expo install expo-haptics expo-av
   ```
-- [x] 2.7 Animations:
+- [ ] 2.7 Animations:
   ```bash
   npx expo install react-native-reanimated lottie-react-native
   ```
-- [x] 2.8 Fonts:
+- [ ] 2.8 Fonts:
   ```bash
   npx expo install @expo-google-fonts/poppins @expo-google-fonts/inter @expo-google-fonts/montserrat expo-font
   ```
-- [x] 2.9 Utilities:
+- [ ] 2.9 Utilities:
   ```bash
   npx expo install expo-crypto expo-secure-store @react-native-community/netinfo
   ```
-- [x] 2.10 Dev tools:
+- [ ] 2.10 Dev tools:
   ```bash
   npm install -D babel-plugin-module-resolver
   ```
-- [x] 2.11 Run `npx expo start` — confirm app boots with no errors
-- [x] 2.12 Commit: `feat: install all Phase 1 dependencies`
+- [ ] 2.11 Run `npx expo start` — confirm app boots with no errors
+- [ ] 2.12 Commit: `feat: install all Phase 1 dependencies`
 
 ---
 
 ## Stage 3 — Folder Structure
 
-- [x] 3.1 Scaffold all folders per PROJECT.md §6:
+- [ ] 3.1 Scaffold all folders per PROJECT.md §6:
   ```
   src/navigation/stacks/
   src/navigation/tabs/
@@ -93,109 +93,109 @@
   src/constants/
   tasks/
   ```
-- [x] 3.2 Add a `.gitkeep` in each empty folder so git tracks them
-- [x] 3.3 Commit: `feat: scaffold folder structure`
+- [ ] 3.2 Add a `.gitkeep` in each empty folder so git tracks them
+- [ ] 3.3 Commit: `feat: scaffold folder structure`
 
 ---
 
 ## Stage 4 — Constants & Theme
 
-- [x] 4.1 `src/constants/theme.ts` — color tokens + font names from PROJECT.md §10
-- [x] 4.2 `src/constants/scoring.ts` — `SCORE_LIMITS`, `MAX_TIMEOUTS_PER_TEAM`, `SIDE_SWITCH_THRESHOLD`
-- [x] 4.3 `src/constants/firebase.ts` — collection name constants (empty strings for now, used in Phase 2)
-- [x] 4.4 Configure `tailwind.config.js` — extend with DULA color tokens
-- [x] 4.5 Commit: `feat: add theme constants and tailwind config`
+- [ ] 4.1 `src/constants/theme.ts` — color tokens + font names from PROJECT.md §10
+- [ ] 4.2 `src/constants/scoring.ts` — `SCORE_LIMITS`, `MAX_TIMEOUTS_PER_TEAM`, `SIDE_SWITCH_THRESHOLD`
+- [ ] 4.3 `src/constants/firebase.ts` — collection name constants (empty strings for now, used in Phase 2)
+- [ ] 4.4 Configure `tailwind.config.js` — extend with DULA color tokens
+- [ ] 4.5 Commit: `feat: add theme constants and tailwind config`
 
 ---
 
 ## Stage 5 — Types
 
-- [x] 5.1 `src/types/base.types.ts` — `BaseEntity`, `SyncStatus` (GLOBAL.md §10)
-- [x] 5.2 `src/types/event.types.ts` — `MatchEvent` union type
-- [x] 5.3 `src/types/match.types.ts` — `Match`, `Team`, `MatchType`, `MatchStatus`, `ScoreLimit`
-- [x] 5.4 `src/types/user.types.ts` — `UserProfile`
-- [x] 5.5 `src/types/tournament.types.ts` — `Tournament`, `Standing`, `Court` (scaffold only — Phase 4)
-- [x] 5.6 Run `npx tsc --noEmit` — zero errors
-- [x] 5.7 Commit: `feat: define all core TypeScript types`
+- [ ] 5.1 `src/types/base.types.ts` — `BaseEntity`, `SyncStatus` (GLOBAL.md §10)
+- [ ] 5.2 `src/types/event.types.ts` — `MatchEvent` union type
+- [ ] 5.3 `src/types/match.types.ts` — `Match`, `Team`, `MatchType`, `MatchStatus`, `ScoreLimit`
+- [ ] 5.4 `src/types/user.types.ts` — `UserProfile`
+- [ ] 5.5 `src/types/tournament.types.ts` — `Tournament`, `Standing`, `Court` (scaffold only — Phase 4)
+- [ ] 5.6 Run `npx tsc --noEmit` — zero errors
+- [ ] 5.7 Commit: `feat: define all core TypeScript types`
 
 ---
 
 ## Stage 6 — Utilities & Logger
 
-- [x] 6.1 `src/utils/logger.ts` — central logger (GLOBAL.md §14 pattern)
-- [x] 6.2 `src/utils/formatDate.ts` — ISO 8601 helpers (`formatMatchDate`, `formatDuration`)
-- [x] 6.3 `src/utils/shareCard.ts` — pure function: `buildShareCardData(match: Match): ShareCardData`
-- [x] 6.4 Commit: `feat: add logger, formatDate, and shareCard utils`
+- [ ] 6.1 `src/utils/logger.ts` — central logger (GLOBAL.md §14 pattern)
+- [ ] 6.2 `src/utils/formatDate.ts` — ISO 8601 helpers (`formatMatchDate`, `formatDuration`)
+- [ ] 6.3 `src/utils/shareCard.ts` — pure function: `buildShareCardData(match: Match): ShareCardData`
+- [ ] 6.4 Commit: `feat: add logger, formatDate, and shareCard utils`
 
 ---
 
 ## Stage 7 — Zustand Stores
 
-- [x] 7.1 `src/store/uiStore.ts` — `isOffline`, `toasts`, `liveSyncEnabled` (off)
-- [x] 7.2 `src/store/activeMatchStore.ts` — full store per PROJECT.md §7
-- [x] 7.3 Verify stores export correctly — no TypeScript errors
-- [x] 7.4 Commit: `feat: add uiStore and activeMatchStore`
+- [ ] 7.1 `src/store/uiStore.ts` — `isOffline`, `toasts`, `liveSyncEnabled` (off)
+- [ ] 7.2 `src/store/activeMatchStore.ts` — full store per PROJECT.md §7
+- [ ] 7.3 Verify stores export correctly — no TypeScript errors
+- [ ] 7.4 Commit: `feat: add uiStore and activeMatchStore`
 
 ---
 
 ## Stage 8 — SQLite Database
 
-- [x] 8.1 `src/services/db/matchDb.ts`:
+- [ ] 8.1 `src/services/db/match.db.ts`:
   - `CREATE TABLE IF NOT EXISTS matches` per SCHEMA.md
   - WAL mode: `PRAGMA journal_mode=WAL`
   - All indexes created on init
   - Functions: `insertMatch`, `updateMatch`, `getMatchByUuid`, `getAllMatches`, `getRecentMatches`
-- [x] 8.2 Wire `SQLiteProvider` in `App.tsx` — DB initializes on first run
-- [x] 8.3 Test: insert a mock match, read it back — verify round-trip
-- [x] 8.4 Commit: `feat: sqlite schema and match.db service`
+- [ ] 8.2 Wire `SQLiteProvider` in `App.tsx` — DB initializes on first run
+- [ ] 8.3 Test: insert a mock match, read it back — verify round-trip
+- [ ] 8.4 Commit: `feat: sqlite schema and match.db service`
 
 ---
 
 ## Stage 9 — Mock Data & Mock Hooks
 
-- [x] 9.1 `src/mocks/match.mock.ts` — 3–5 realistic completed matches + 1 active match
-- [x] 9.2 `src/mocks/user.mock.ts` — 1 local user profile
-- [x] 9.3 `src/hooks/useMatchMock.ts` — returns `{ data, isLoading, isError, isEmpty }` with simulated 800ms delay
-- [x] 9.4 `src/hooks/useProfileMock.ts` — same shape
-- [x] 9.5 Verify mock hook shape matches what real hook will return
-- [x] 9.6 Commit: `feat: mock data and mock hooks`
+- [ ] 9.1 `src/mocks/match.mock.ts` — 3–5 realistic completed matches + 1 active match
+- [ ] 9.2 `src/mocks/user.mock.ts` — 1 local user profile
+- [ ] 9.3 `src/hooks/useMatchMock.ts` — returns `{ data, isLoading, isError, isEmpty }` with simulated 800ms delay
+- [ ] 9.4 `src/hooks/useProfileMock.ts` — same shape
+- [ ] 9.5 Verify mock hook shape matches what real hook will return
+- [ ] 9.6 Commit: `feat: mock data and mock hooks`
 
 ---
 
 ## Stage 10 — Navigation Scaffold
 
-- [x] 10.1 `src/navigation/types.ts` — ALL param lists (per PROJECT.md §5)
-- [x] 10.2 Placeholder screens — one `<Text>` component per screen, just enough to navigate:
+- [ ] 10.1 `src/navigation/types.ts` — ALL param lists (per PROJECT.md §5)
+- [ ] 10.2 Placeholder screens — one `<Text>` component per screen, just enough to navigate:
   - `DashboardScreen`, `MatchSetupScreen`
   - `LiveScoringScreen`, `MatchSummaryScreen`, `ShareCardScreen`
   - `MatchHistoryScreen`, `MatchDetailScreen`
   - `ProfileScreen`, `SettingsScreen`
-- [x] 10.3 `src/navigation/stacks/HomeStack.tsx`
-- [x] 10.4 `src/navigation/stacks/MatchStack.tsx`
-- [x] 10.5 `src/navigation/stacks/HistoryStack.tsx`
-- [x] 10.6 `src/navigation/stacks/ProfileStack.tsx`
-- [x] 10.7 `src/navigation/tabs/MainTabs.tsx` — bottom tab bar with all 4 tabs (Analytics tab hidden until Phase 3)
-- [x] 10.8 `src/navigation/RootNavigator.tsx` — mounts `MainTabs` directly (no auth gate in Phase 1)
-- [x] 10.9 Wire `RootNavigator` in `App.tsx`
-- [x] 10.10 Manually tap through every screen — fixed crash on MatchTab when no match is active
-- [x] 10.11 Run `npx tsc --noEmit` — zero errors on param lists
-- [x] 10.12 Commit: `feat: full navigation scaffold with placeholder screens and fix MatchTab crash`
+- [ ] 10.3 `src/navigation/stacks/HomeStack.tsx`
+- [ ] 10.4 `src/navigation/stacks/MatchStack.tsx`
+- [ ] 10.5 `src/navigation/stacks/HistoryStack.tsx`
+- [ ] 10.6 `src/navigation/stacks/ProfileStack.tsx`
+- [ ] 10.7 `src/navigation/tabs/MainTabs.tsx` — bottom tab bar with all 4 tabs (Analytics tab hidden until Phase 3)
+- [ ] 10.8 `src/navigation/RootNavigator.tsx` — mounts `MainTabs` directly (no auth gate in Phase 1)
+- [ ] 10.9 Wire `RootNavigator` in `App.tsx`
+- [ ] 10.10 Manually tap through every screen — no crash, correct tab/stack behaviour
+- [ ] 10.11 Run `npx tsc --noEmit` — zero errors on param lists
+- [ ] 10.12 Commit: `feat: full navigation scaffold with placeholder screens`
 
 ---
 
 ## Stage 11 — App.tsx Bootstrap
 
-- [x] 11.1 `App.tsx` wires everything together:
+- [ ] 11.1 `App.tsx` wires everything together:
   - `SQLiteProvider`
   - `QueryClientProvider` (TanStack Query with GLOBAL.md §9 defaults)
   - `onlineManager` + `NetInfo` wired (GLOBAL.md §9)
   - Font loading via `useFonts` (Poppins, Inter, Montserrat)
   - `RootNavigator`
   - `OfflineBanner` component overlaid globally
-- [x] 11.2 `src/components/ui/OfflineBanner.tsx` — reads `uiStore.isOffline`, shows persistent bar
-- [x] 11.3 NetInfo listener in `App.tsx` sets `uiStore.setOffline()`
-- [x] 11.4 Test: toggle wifi off on simulator — banner appears. Toggle on — banner disappears.
-- [x] 11.5 Commit: `feat: App.tsx bootstrap with SQLite, TanStack Query, fonts, offline banner`
+- [ ] 11.2 `src/components/ui/OfflineBanner.tsx` — reads `uiStore.isOffline`, shows persistent bar
+- [ ] 11.3 NetInfo listener in `App.tsx` sets `uiStore.setOffline()`
+- [ ] 11.4 Test: toggle wifi off on simulator — banner appears. Toggle on — banner disappears.
+- [ ] 11.5 Commit: `feat: App.tsx bootstrap with SQLite, TanStack Query, fonts, offline banner`
 
 ---
 
@@ -203,16 +203,16 @@
 
 Before moving to real feature screens, confirm ALL of the following:
 
-- [x] `npx tsc --noEmit` — zero errors
-- [x] `npx expo lint` — zero warnings (Skipped: Not configured)
-- [x] App boots cold in < 3 seconds on simulator
-- [x] All tabs navigate correctly
-- [x] All stacks push/pop correctly
-- [x] Offline banner appears/disappears on network toggle
-- [x] SQLite round-trip works (insert → read → verify)
-- [x] Fonts render (check Dashboard placeholder screen)
-- [x] No `console.log` — only `logger`
-- [x] No `app/` directory exists
+- [ ] `npx tsc --noEmit` — zero errors
+- [ ] `npx expo lint` — zero warnings
+- [ ] App boots cold in < 3 seconds on simulator
+- [ ] All tabs navigate correctly
+- [ ] All stacks push/pop correctly
+- [ ] Offline banner appears/disappears on network toggle
+- [ ] SQLite round-trip works (insert → read → verify)
+- [ ] Fonts render (check Dashboard placeholder screen)
+- [ ] No `console.log` — only `logger`
+- [ ] No `app/` directory exists
 
 **If all pass → proceed to Stage 12. If any fail → fix before moving on.**
 
@@ -220,34 +220,34 @@ Before moving to real feature screens, confirm ALL of the following:
 
 ## Stage 12 — Scoring Engine (Pure Logic)
 
-- [x] 12.1 `src/features/scoring/scoringEngine.ts`:
-  - [x] `addPoint(state, teamId)` → new state
-  - [x] `addFault(state, playerId)` → new state + serve rotation
-  - [x] `callTimeout(state, teamId)` → new state
-  - [x] `undo(state)` → previous state (pop last event)
-  - [x] `applySideSwitch(state)` → new state
-  - [x] `checkWinCondition(state)` → `{ winner: Team | null }`
-  - [x] `getInitialMatchState(config: MatchConfig)` → initial state
-- [x] 12.2 Jest unit tests — `scoringEngine.test.ts`:
-  - [x] Singles serve rotation
-  - [x] Doubles serve rotation (both players serve before side-out)
-  - [x] First game one-fault rule
-  - [x] Undo restores previous state
-  - [x] Win condition detected at score limit
-  - [x] Win-by-two holds until 2-point gap
-- [x] 12.3 `npx jest` — all tests pass
-- [x] 12.4 Commit: `feat: scoring engine with full jest coverage`
+- [ ] 12.1 `src/features/scoring/scoringEngine.ts`:
+  - `addPoint(state, teamId)` → new state
+  - `addFault(state, playerId)` → new state + serve rotation
+  - `callTimeout(state, teamId)` → new state
+  - `undo(state)` → previous state (pop last event)
+  - `applySideSwitch(state)` → new state
+  - `checkWinCondition(state)` → `{ winner: Team | null }`
+  - `getInitialMatchState(config: MatchConfig)` → initial state
+- [ ] 12.2 Jest unit tests — `scoringEngine.test.ts`:
+  - Singles serve rotation
+  - Doubles serve rotation (both players serve before side-out)
+  - First game one-fault rule
+  - Undo restores previous state
+  - Win condition detected at score limit
+  - Win-by-two holds until 2-point gap
+- [ ] 12.3 `npx jest` — all tests pass
+- [ ] 12.4 Commit: `feat: scoring engine with full jest coverage`
 
 ---
 
 ## Stage 13 — UI Primitives
 
-- [x] 13.1 `src/components/ui/Button.tsx` — primary / secondary / ghost variants, NativeWind
-- [x] 13.2 `src/components/ui/Card.tsx` — surface container, dark mode aware
-- [x] 13.3 `src/components/ui/LoadingSpinner.tsx`
-- [x] 13.4 `src/components/ui/EmptyState.tsx` — message + optional CTA button
-- [x] 13.5 `src/components/ui/ErrorState.tsx` — message + retry callback
-- [x] 13.6 Commit: `feat: ui primitive components`
+- [ ] 13.1 `src/components/ui/Button.tsx` — primary / secondary / ghost variants, NativeWind
+- [ ] 13.2 `src/components/ui/Card.tsx` — surface container, dark mode aware
+- [ ] 13.3 `src/components/ui/LoadingSpinner.tsx`
+- [ ] 13.4 `src/components/ui/EmptyState.tsx` — message + optional CTA button
+- [ ] 13.5 `src/components/ui/ErrorState.tsx` — message + retry callback
+- [ ] 13.6 Commit: `feat: ui primitive components`
 
 ---
 
@@ -270,40 +270,48 @@ Before moving to real feature screens, confirm ALL of the following:
 - [x] `LiveScoringScreen` — full scoreboard UI wired to `activeMatchStore`
 - [x] `src/components/features/scoring/TeamCard.tsx`
 - [x] `src/components/features/scoring/MatchTimer.tsx`
-- [x] `src/components/features/scoring/ActionBar.tsx` (Undo, Timeout, End)
+- [x] `src/components/features/scoring/ActionBar.tsx`
 - [x] Scoring calls `scoringEngine` → updates `activeMatchStore` → writes event to SQLite
-- [x] On match end: `updateMatch()` in SQLite with final state → navigate to `MatchSummaryScreen`
 
 ### 14D — Match Summary + Share CTA
 
-- [x] `MatchSummaryScreen` — final score, match stats, winner banner, **"Share Result" CTA**
-- [x] "Share Result" navigates to `ShareCardScreen`
+- [x] `MatchSummaryScreen` — final score, match stats, winner banner, Share CTA
 
 ### 14E — Share Card
 
-- [x] `src/components/features/share/ShareCardFeed.tsx` — 1:1 styled card
-- [x] `src/components/features/share/ShareCardStory.tsx` — 9:16 styled card
-- [x] `ShareCardScreen` — preview + format toggle (Feed / Story) + Share + Save buttons
-- [x] `src/services/share/shareCard.service.ts` — `captureCard`, `shareImage`, `saveToGallery`
-- [x] Test: share sheet opens on device, image saves to camera roll (Logic verified, requires physical device for full test)
+- [x] `src/components/features/share/ShareCardFeed.tsx`
+- [x] `src/components/features/share/ShareCardStory.tsx`
+- [x] `ShareCardScreen` — preview, format toggle, Share + Save buttons
+- [x] `src/services/share/shareCard.service.ts`
 
 ### 14F — History
 
-- [x] `MatchHistoryScreen` — FlashList of past matches from SQLite, pull-to-refresh
-- [x] `MatchDetailScreen` — single match breakdown + reshare button
+- [x] `MatchHistoryScreen` — FlatList, pull-to-refresh, focus reload
+- [x] `MatchDetailScreen` — match breakdown, event timeline, reshare, soft delete
 
-### 14G — Settings
+### 14G — Settings + Profile
 
-- [x] `SettingsScreen` — Live Sync toggle (visible, disabled, "Coming soon" label)
-- [x] `ProfileScreen` — local display name (no auth yet — editable local name only)
-
-- [ ] Commit after each screen group (14A–14G)
+- [x] `SettingsScreen` — haptics/sound toggles, clear history, version
+- [x] `ProfileScreen` — display name editor, stats from SQLite
 
 ---
 
 ## Stage 15 — Real Hook Cutover
 
-- [ ] 15.1 `src/hooks/useMatch.ts` — TanStack Query, reads from `matchDb.ts`
+- [ ] 15.1 Create `src/hooks/useMatch.ts` — TanStack Query with `matchKeys` factory
+- [ ] 15.2 Implement `useMatchList()` — reads all matches from `matchDb`
+- [ ] 15.3 Implement `useMatchDetail(uuid)` — reads single match from `matchDb`
+- [ ] 15.4 Swap `useMatchMock` → `useMatchList` in `DashboardScreen`
+- [ ] 15.5 Update `MatchHistoryScreen` to use `useMatchList` instead of direct SQLite
+- [ ] 15.6 Verify screen behaviour identical to mock version
+- [ ] 15.7 Run `npx tsc --noEmit && npx expo lint && npx jest`
+- [ ] 15.8 Commit: `feat: real useMatch hook wired to SQLite (Stage 15)`
+
+---
+
+## Stage 15 — Real Hook Cutover
+
+- [ ] 15.1 `src/hooks/useMatch.ts` — TanStack Query, reads from `match.db.ts`
 - [ ] 15.2 Swap `useMatchMock` → `useMatch` in `DashboardScreen` and `MatchHistoryScreen`
 - [ ] 15.3 Verify screen behaviour identical to mock version
 - [ ] 15.4 Commit: `feat: real useMatch hook wired to SQLite`

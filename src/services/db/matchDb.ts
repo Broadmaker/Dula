@@ -25,7 +25,6 @@ type MatchRow = {
   teams_json: string;
   events_json: string;
   score_json: string;
-  server_number: number;
   serving_team_id: string | null;
   serving_player_id: string | null;
   started_at: string | null;
@@ -53,7 +52,6 @@ const mapRowToMatch = (row: MatchRow): Match => ({
   teams:         JSON.parse(row.teams_json) as Team[],
   events:        JSON.parse(row.events_json) as MatchEvent[],
   score:         JSON.parse(row.score_json) as Record<string, number>,
-  serverNumber:  row.server_number as 1 | 2,
   servingTeamId:   row.serving_team_id,
   servingPlayerId: row.serving_player_id,
   startedAt:       row.started_at ?? undefined,
@@ -89,7 +87,6 @@ export const initDatabase = async (db: SQLiteDatabase) => {
         events_json     TEXT    NOT NULL DEFAULT '[]',
         score_json      TEXT    NOT NULL DEFAULT '{}',
 
-        server_number     INTEGER NOT NULL DEFAULT 1,
         serving_team_id   TEXT,
         serving_player_id TEXT,
         started_at        TEXT,
@@ -122,8 +119,8 @@ export const matchDb = (db: SQLiteDatabase) => ({
       `INSERT INTO matches (
         uuid, owner_id, type, status, score_limit, win_by_two,
         rally_scoring, tournament_mode, is_public, teams_json,
-        events_json, score_json, server_number, sync_status, created_at, updated_at
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`,
+        events_json, score_json, sync_status, created_at, updated_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`,
       match.uuid,
       match.ownerId,
       match.type,
@@ -136,7 +133,6 @@ export const matchDb = (db: SQLiteDatabase) => ({
       JSON.stringify(match.teams),
       JSON.stringify(match.events),
       JSON.stringify(match.score),
-      match.serverNumber,
       match.sync_status,
       match.created_at,
       match.updated_at
@@ -150,7 +146,6 @@ export const matchDb = (db: SQLiteDatabase) => ({
         teams_json        = ?,
         events_json       = ?,
         score_json        = ?,
-        server_number     = ?,
         serving_team_id   = ?,
         serving_player_id = ?,
         started_at        = ?,
@@ -163,7 +158,6 @@ export const matchDb = (db: SQLiteDatabase) => ({
       JSON.stringify(match.teams),
       JSON.stringify(match.events),
       JSON.stringify(match.score),
-      match.serverNumber,
       match.servingTeamId ?? null,
       match.servingPlayerId ?? null,
       match.startedAt ?? null,
@@ -172,6 +166,14 @@ export const matchDb = (db: SQLiteDatabase) => ({
       match.sync_status,
       match.updated_at,
       match.uuid
+    );
+  },
+
+  async deleteMatch(uuid: string) {
+    return db.runAsync(
+      "UPDATE matches SET sync_status = 'deleted', updated_at = ? WHERE uuid = ?;",
+      new Date().toISOString(),
+      uuid
     );
   },
 

@@ -8,48 +8,87 @@
 
 ## Current Status
 
-**Phase:** 1 — Implementation in progress (Stage 14G complete)
-**Last action:** Implemented Settings and Profile screens (Stage 14G)
-**Date:** May 11, 2026
+**Phase:** 1 — Stage 14 complete, Stage 15 next
+**Last action:** All feature components and screens built and verified clean
+**Date:** May 2026
 
 ---
 
 ## What Was Completed This Session
 
-- [x] Phase 1 Scaffold (Stages 1–11)
-- [x] Scoring Engine logic + unit tests (Stage 12)
-- [x] Atomic UI Primitives (Button, Card, LoadingSpinner, EmptyState, ErrorState) (Stage 13)
-- [x] Dashboard Screen & MatchCard component (Stage 14A)
-- [x] Match Setup Screen with SQLite integration (Stage 14B)
-- [x] Live Scoring Screen with real-time updates and persistence (Stage 14C)
-- [x] Match Summary Screen with winner banner and statistics (Stage 14D)
-- [x] Share Card components and screen with sharing service (Stage 14E)
-- [x] Match History and Match Detail screens (Stage 14F)
-- [x] Settings and Profile screens with local stats (Stage 14G)
+- [x] Stage 14 — All 6 feature components built and audited
+- [x] Stage 14 — All 6 remaining screens built and audited
+- [x] `settingsStore.ts` created
+- [x] `matchDb.deleteMatch` soft delete added
+- [x] `LOCAL_USER_ID` constant added
+- [x] All verified: `tsc --noEmit` ✅ · `expo lint` ✅ · `jest` 16/16 ✅
 
 ---
 
 ## Next Action
 
-> Starting Stage 15: Real Hook Cutover
+**Stage 15 — Real Hook Cutover**
 
-**Step 1 of Stage 15:** Build `src/hooks/useMatch.ts`:
+Build `src/hooks/useMatch.ts` following GLOBAL.md §9 TanStack Query pattern:
 
-- [ ] Create `useMatch` hook using TanStack Query
-- [ ] Connect `useMatch` to `matchDb.ts` for real SQLite fetching
-- [ ] Swap `useMatchMock` for `useMatch` in `DashboardScreen` and `MatchHistoryScreen`
+### Step 1 — Create `useMatch.ts`
+
+```ts
+// src/hooks/useMatch.ts
+import { useQuery } from "@tanstack/react-query";
+import { useSQLiteContext } from "expo-sqlite";
+import { matchDb } from "@/services/db/matchDb";
+
+export const matchKeys = {
+  all: () => ["matches"] as const,
+  list: () => ["matches", "list"] as const,
+  detail: (uuid: string) => ["matches", "detail", uuid] as const,
+};
+
+export function useMatchList() { ... }
+export function useMatchDetail(uuid: string) { ... }
+```
+
+### Step 2 — Swap mock hooks in screens
+
+| Screen               | From                | To             |
+| -------------------- | ------------------- | -------------- |
+| `DashboardScreen`    | `useMatchMock`      | `useMatchList` |
+| `MatchHistoryScreen` | direct SQLite calls | `useMatchList` |
+
+### Step 3 — Verify shape parity
+
+Mock hook and real hook must return same shape — zero screen changes required.
 
 ---
 
-## Phase 1 Core Loop (reminder)
+## Open Items
 
-```
-Match Setup → Live Scoring (SQLite) → Match Summary → Share Card
-                                                           ↓
-                                             Feed (1:1) or Story (9:16)
-                                                           ↓
-                                         Share sheet or save to camera roll
-```
+- [ ] GitHub repo URL — link when created
+- [ ] Firebase project config values — fill `.env` when Phase 2 starts
+- [ ] Bundle ID confirmed (`com.dula.app` is placeholder)
+- [ ] Rating system decision deferred to Phase 3 (DECISIONS.md D-005)
+- [ ] `hapticsEnabled` from `settingsStore` not yet wired to `LiveScoringScreen` haptic calls
+- [ ] `soundEnabled` from `settingsStore` — sound effects not yet implemented (Phase 2)
+- [ ] Display name in `ProfileScreen` not persisted — resets on app restart (AsyncStorage in Phase 2)
+
+## Key Files
+
+| File                | Location                 |
+| ------------------- | ------------------------ |
+| `PROJECT.md`        | project root             |
+| `GLOBAL.md`         | project root             |
+| `DECISIONS.md`      | project root             |
+| `SCHEMA.md`         | project root             |
+| `project.config.ts` | project root             |
+| `CONTEXT.md`        | project root (this file) |
+| `LESSONS.md`        | global                   |
+| `SUMMARY.md`        | project root             |
+| `tasks/todo.md`     | project root             |
+
+---
+
+_Last updated: May 2026_
 
 ---
 

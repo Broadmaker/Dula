@@ -226,406 +226,256 @@ BREAKING: No Firebase/Firestore in Phase 1 — fully offline SQLite only
 
 ---
 
-## Session 003 — Scoring Engine (Stage 12)
+## Session 003 — Scoring Engine + UI Primitives + Feature Screens (Stages 12–14)
 
-**Date:** May 11, 2026
-**Goal:** Implement the core scoring engine with pure functions and full Jest coverage for pickleball rules.
+**Date:** May 2026
+**Goal:** Build scoring engine with full Jest coverage, all UI primitives, and key feature screens (LiveScoring, ShareCard, Dashboard).
+
+### Stages Completed
+
+| Stage        | Description                                                           | Status  |
+| ------------ | --------------------------------------------------------------------- | ------- |
+| 12           | Scoring engine — pure functions + 16 Jest tests                       | ✅ Done |
+| 13           | UI primitives — Button, Card, LoadingSpinner, EmptyState, ErrorState  | ✅ Done |
+| 14 (partial) | Feature screens — LiveScoringScreen, ShareCardScreen, DashboardScreen | ✅ Done |
+
+### Files Created / Modified
+
+**Scoring Engine:**
+
+- `src/features/scoring/scoringEngine.ts` — 7 pure functions, no side effects
+- `src/features/scoring/scoringEngine.test.ts` — 16 tests, all passing
+- `src/__mocks__/expo-crypto.ts` — Jest mock for native module
+
+**UI Primitives:**
+
+- `src/components/ui/Button.tsx` — 4 variants, 3 sizes, loading state, icon slot, accessibility
+- `src/components/ui/Card.tsx` — dark mode aware surface container
+- `src/components/ui/LoadingSpinner.tsx` — fullScreen variant, optional message
+- `src/components/ui/EmptyState.tsx` — title, message, icon, optional CTA
+- `src/components/ui/ErrorState.tsx` — title, message, optional retry
+
+**Feature Screens:**
+
+- `src/screens/Match/LiveScoringScreen.tsx` — full scoring flow wired to engine + SQLite
+- `src/screens/Match/ShareCardScreen.tsx` — format toggle, capture, share, save
+- `src/screens/Home/DashboardScreen.tsx` — recent matches list, quick-start CTA
+
+**Services:**
+
+- `src/services/share/shareCard.service.ts` — captureCard, shareImage, saveToGallery
+
+**Store Updates:**
+
+- `src/store/activeMatchStore.ts` — added `isFirstServer: boolean`, `serverNumber: number`
+
+**Config:**
+
+- `package.json` — added Jest config (preset, transformIgnorePatterns, moduleNameMapper)
+
+### Bugs Found & Fixed
+
+| #   | File                    | Bug                                                                | Fix                                                             |
+| --- | ----------------------- | ------------------------------------------------------------------ | --------------------------------------------------------------- |
+| 1   | `scoringEngine.ts`      | `Math.random()` for eventId                                        | Replaced with `Crypto.randomUUID()`                             |
+| 2   | `scoringEngine.ts`      | `calculateSnapshot` called on every action — O(n) replay           | Snapshot passed directly as first arg — calculate only for undo |
+| 3   | `scoringEngine.ts`      | `undo` both stored UNDO event AND truncated — double counting      | Truncate only — no UNDO event stored                            |
+| 4   | `scoringEngine.ts`      | First-game one-fault rule incomplete                               | Added `isFirstServer` flag to `MatchSnapshot`                   |
+| 5   | `scoringEngine.ts`      | Receiving team win in standard scoring called `applyFault`         | Corrected to call `sideOut` directly                            |
+| 6   | `scoringEngine.ts`      | Unused `currentPlayerIdx` variable                                 | Removed                                                         |
+| 7   | `scoringEngine.test.ts` | `addPoint/addFault` called with old signature                      | Updated to new snapshot-first signature                         |
+| 8   | `scoringEngine.test.ts` | `match` mutated directly in multi-step tests                       | Switched to immutable snapshot threading                        |
+| 9   | `scoringEngine.test.ts` | `checkWinCondition` args reversed                                  | Fixed — snapshot first, match second                            |
+| 10  | `scoringEngine.test.ts` | Snapshot missing `isFirstServer`                                   | Added to all inline snapshot objects                            |
+| 11  | `scoringEngine.test.ts` | `undo` called twice                                                | Removed duplicate call                                          |
+| 12  | `scoringEngine.test.ts` | Missing `callTimeout` tests                                        | Added — deducts timeout, respects max                           |
+| 13  | `match.types.ts`        | `serverNumber` added incorrectly — belongs in `MatchSnapshot` only | Removed from `Match` type                                       |
+| 14  | `activeMatchStore.ts`   | `serverNumber: 1 \| 2` too narrow                                  | Changed to `number`                                             |
+| 15  | `activeMatchStore.ts`   | `isFirstServer` missing                                            | Added to `MatchSnapshot` and store state                        |
+| 16  | `package.json`          | No Jest config — native modules failing                            | Added preset, transformIgnorePatterns, moduleNameMapper         |
+| 17  | `expo-crypto mock`      | Placed in `src/mocks/` instead of `src/__mocks__/`                 | Moved to correct `__mocks__` folder                             |
+| 18  | `Button.tsx`            | `label: string` instead of `children`                              | Switched to `children: React.ReactNode`                         |
+| 19  | `Button.tsx`            | Hardcoded color in ActivityIndicator                               | Replaced with `colors.primary` / `colors.onPrimary`             |
+| 20  | `Button.tsx`            | `accessibilityLabel` missing                                       | Added with role and state                                       |
+| 21  | `LoadingSpinner.tsx`    | `message` prop missing                                             | Added with `Text` below spinner                                 |
+| 22  | `LoadingSpinner.tsx`    | `bg-background-dark` invalid Tailwind class                        | Replaced with `bg-[#121212]`                                    |
+| 23  | `LiveScoringScreen.tsx` | `useActiveMatchStore()` whole-store subscription                   | Replaced with selective selectors per value/action              |
+| 24  | `LiveScoringScreen.tsx` | `useEffect` missing `activeMatch` deps                             | Fixed — stable selectors used as deps                           |
+| 25  | `LiveScoringScreen.tsx` | `serverNumber` on `updatedMatch` — field removed from `Match`      | Removed from all `updatedMatch` objects                         |
+| 26  | `LiveScoringScreen.tsx` | Snapshot built inline 3 times                                      | Extracted to `getCurrentSnapshot` useCallback                   |
+| 27  | `LiveScoringScreen.tsx` | `bg-background-dark` invalid class                                 | Replaced with `bg-[#121212]`                                    |
+| 28  | `LiveScoringScreen.tsx` | `handlePoint` depended on `handleEndMatch` not in deps             | Moved `handleEndMatch` above `handlePoint`, added to deps       |
+| 29  | `LiveScoringScreen.tsx` | `handlePoint` declared twice after reorder                         | Removed duplicate block                                         |
+| 30  | `LiveScoringScreen.tsx` | `NodeJS.Timeout` unavailable in RN                                 | Changed to `ReturnType<typeof setInterval>`                     |
+| 31  | `ShareCardScreen.tsx`   | `Card` imported but unused                                         | Removed import                                                  |
+| 32  | `ShareCardScreen.tsx`   | `bg-background-dark` invalid class                                 | Replaced with `bg-[#121212]`                                    |
+| 33  | `ShareCardScreen.tsx`   | `captureCard` received `ref.current` instead of `ref`              | Fixed to pass `RefObject` directly                              |
+| 34  | `shareCard.service.ts`  | `any` type on `viewRef`                                            | Typed as `RefObject<View \| null>`                              |
+| 35  | `shareCard.service.ts`  | `Platform` imported but unused                                     | Removed                                                         |
+| 36  | `DashboardScreen.tsx`   | `ScrollView`, `RefreshControl` unused                              | Removed imports                                                 |
+| 37  | `DashboardScreen.tsx`   | `MatchStackParamList`, `HistoryStackParamList` unused              | Removed imports                                                 |
+| 38  | `DashboardScreen.tsx`   | `isEmpty` unused                                                   | Removed from destructure                                        |
+| 39  | `DashboardScreen.tsx`   | `bg-background-dark` invalid class                                 | Replaced with `bg-[#121212]`                                    |
+
+### Verification Results
+
+| Check                | Result           |
+| -------------------- | ---------------- |
+| `npx tsc --noEmit`   | ✅ 0 errors      |
+| `npx expo lint`      | ✅ 0 warnings    |
+| `npx jest --verbose` | ✅ 16/16 passing |
+
+### Commits
+
+```
+feat: implement scoring engine with full Jest coverage (Stage 12)
+
+- Add scoringEngine.ts — pure functions, no side effects
+- Implement getInitialMatchState, addPoint, addFault, callTimeout,
+  undo, checkWinCondition, calculateSnapshot
+- Handle doubles serve rotation — first-game one-fault rule,
+  server 1/2 switching, side-out logic
+- Handle singles serve rotation and side-out
+- Handle rally scoring vs standard scoring
+- Handle win-by-two condition
+- Add isFirstServer flag to MatchSnapshot for first-game rule
+- Add expo-crypto Jest mock in src/__mocks__/
+- Add Jest config to package.json — preset, transformIgnorePatterns,
+  moduleNameMapper for @/ alias and expo-crypto mock
+- Fix: remove serverNumber from Match type — belongs in MatchSnapshot only
+- 16 tests passing across 6 describe blocks
+```
+
+```
+feat: UI primitives, scoring screen, and share card (Stages 13-14)
+
+- Add Button — primary/secondary/ghost/error variants, size sm/md/lg,
+  loading state, icon slot, accessibility props
+- Add Card — dark mode aware surface container
+- Add LoadingSpinner — fullScreen variant, optional message
+- Add EmptyState — title, message, icon, optional CTA
+- Add ErrorState — title, message, optional retry callback
+- Fix LiveScoringScreen — Zustand selective selectors, useCallback on
+  all handlers, handleEndMatch moved before handlePoint
+- Fix LiveScoringScreen — ReturnType<typeof setInterval> for RN compat
+- Fix ShareCardScreen — RefObject<View | null> type, remove unused imports
+- Fix shareCard.service.ts — typed viewRef, remove Platform
+- Fix DashboardScreen — remove unused imports and destructures
+```
+
+---
+
+## Session 004 — Stage 14 Complete (Feature Components + Remaining Screens)
+
+**Date:** May 2026
+**Goal:** Build all remaining feature components and screens to complete Stage 14.
 
 ### Stages Completed
 
 | Stage | Description                                    | Status  |
 | ----- | ---------------------------------------------- | ------- |
-| 12    | Scoring Engine (Pure Logic) + Jest unit tests | ✅ Done |
+| 14    | All feature components + all remaining screens | ✅ Done |
 
 ### Files Created / Modified
 
-**Types:**
+**Feature Components:**
 
-- `src/types/match.types.ts` — Added `serverNumber: 1 | 2` to `Match` entity.
+- `src/components/features/matches/MatchCard.tsx` — animated pulse for active matches, winner highlight, score display
+- `src/components/features/scoring/TeamCard.tsx` — large score display, serving indicator, server number badge
+- `src/components/features/scoring/MatchTimer.tsx` — live/paused states, Reanimated pulse animation
+- `src/components/features/scoring/ActionBar.tsx` — Undo, Timeout, End Match buttons with guards
+- `src/components/features/share/ShareCardFeed.tsx` — 1:1 feed format share card
+- `src/components/features/share/ShareCardStory.tsx` — 9:16 story format share card
 
-**Stores:**
+**Screens:**
 
-- `src/store/activeMatchStore.ts` — Added `serverNumber` to `MatchSnapshot`, `ActiveMatchState`, and `INITIAL_STATE`.
+- `src/screens/Home/MatchSetupScreen.tsx` — full match creation form, SQLite insert, store sync, navigate to LiveScoring
+- `src/screens/Match/MatchSummaryScreen.tsx` — winner display, stats grid, share + history CTAs
+- `src/screens/History/MatchHistoryScreen.tsx` — FlatList with pull-to-refresh, focus reload
+- `src/screens/History/MatchDetailScreen.tsx` — match breakdown, event timeline, reshare, resume, soft delete
+- `src/screens/Profile/SettingsScreen.tsx` — haptics/sound toggles, clear history, version info
+- `src/screens/Profile/ProfileScreen.tsx` — display name editor, stats from match history, Phase 2 placeholders
 
-**Features:**
+**New Store:**
 
-- `src/features/scoring/scoringEngine.ts` — Pure functions for pickleball logic (`getInitialMatchState`, `calculateSnapshot`, `addPoint`, `addFault`, `callTimeout`, `undo`, `checkWinCondition`). Implements standard scoring and rally scoring, singles/doubles serve rotation, and win-by-two logic.
-- `src/features/scoring/scoringEngine.test.ts` — Full Jest suite covering all core scenarios.
+- `src/store/settingsStore.ts` — `hapticsEnabled`, `soundEnabled`
+
+**DB Updates:**
+
+- `src/services/db/matchDb.ts` — added `deleteMatch` (soft delete via `sync_status = 'deleted'`)
+
+**Constants:**
+
+- `src/constants/scoring.ts` — added `LOCAL_USER_ID = "local-user"`
 
 ### Bugs Found & Fixed
 
-| #   | File               | Bug                                                                 | Fix                                                       |
-| --- | ------------------ | ------------------------------------------------------------------- | --------------------------------------------------------- |
-| 1   | `scoringEngine.ts` | `getInitialMatchState` used `match.score` causing re-calc to double points | Initialized scores and timeouts to 0 in `getInitialMatchState`. |
-| 2   | `scoringEngine.test.ts` | Tests failing due to `calculateSnapshot` resetting state to initial | Rewrote tests to use a sequence of events to reach target state. |
+| #   | File                     | Bug                                                                       | Fix                                              |
+| --- | ------------------------ | ------------------------------------------------------------------------- | ------------------------------------------------ |
+| 1   | `MatchCard.tsx`          | Winner by score comparison — breaks edge cases                            | Use `checkWinCondition` + `calculateSnapshot`    |
+| 2   | `MatchCard.tsx`          | Encoding error `ΓÇó` in footer                                            | Fixed to `·`                                     |
+| 3   | `MatchCard.tsx`          | `accessibilityLabel` missing                                              | Added with team names and score                  |
+| 4   | `TeamCard.tsx`           | `serverNumber?: 1 \| 2` too narrow — caused TS error in LiveScoringScreen | Widened to `number`                              |
+| 5   | `ActionBar.tsx`          | `SafeAreaView` from `react-native` — no `edges` prop                      | Changed to `react-native-safe-area-context`      |
+| 6   | `ShareCardFeed.tsx`      | `StyleSheet.create` — forbidden anti-pattern                              | Replaced with `className="w-full aspect-square"` |
+| 7   | `ShareCardFeed.tsx`      | Encoding error `ΓÇó`                                                      | Fixed to `·`                                     |
+| 8   | `ShareCardFeed.tsx`      | Props `match + teamA + teamB` didn't match ShareCardScreen usage          | Changed to `data: ShareCardData`                 |
+| 9   | `MatchSetupScreen.tsx`   | `serverNumber` on `Match` object — field removed from type                | Removed                                          |
+| 10  | `MatchSetupScreen.tsx`   | Hardcoded Switch colors                                                   | Used `colors.primary`                            |
+| 11  | `MatchSetupScreen.tsx`   | `ownerId: "local-user"` hardcoded string                                  | Extracted to `LOCAL_USER_ID` constant            |
+| 12  | `MatchSummaryScreen.tsx` | Winner by score comparison                                                | Use `checkWinCondition` + `calculateSnapshot`    |
+| 13  | `MatchSummaryScreen.tsx` | `space-y-4` not supported in NativeWind v4                                | Removed — children have explicit margins         |
+| 14  | `MatchHistoryScreen.tsx` | Double load on mount — focus listener + explicit call                     | Removed explicit call — focus handles all loads  |
+| 15  | `MatchHistoryScreen.tsx` | Empty state navigated to wrong route                                      | Fixed `HomeTab → Dashboard`                      |
+| 16  | `MatchDetailScreen.tsx`  | Hard delete — GLOBAL.md §21 violation                                     | Soft delete via `sync_status = 'deleted'`        |
+| 17  | `MatchDetailScreen.tsx`  | `Button` children had nested `Text`                                       | Removed nested `Text` — Button renders its own   |
+| 18  | `MatchDetailScreen.tsx`  | `colors` imported but unused                                              | Removed import                                   |
+| 19  | `SettingsScreen.tsx`     | `useSettingsStore` didn't exist                                           | Created `settingsStore.ts`                       |
+| 20  | `ProfileScreen.tsx`      | Double load on mount                                                      | Removed explicit call — focus handles all loads  |
+| 21  | `ProfileScreen.tsx`      | `Button` children had nested `Text`                                       | Removed nested `Text`                            |
+| 22  | `ProfileScreen.tsx`      | `ProfileStatBox` defined but never used                                   | Removed                                          |
+| 23  | `scoringEngine.test.ts`  | `serverNumber` in `createBaseMatch` — removed from `Match` type           | Removed from test helper                         |
 
 ### Verification Results
 
-| Check                                        | Result      |
-| -------------------------------------------- | ----------- |
-| `npx tsc --noEmit`                           | ✅ 0 errors |
-| `node node_modules\jest\bin\jest.js`         | ✅ 10/10 passed |
+| Check                | Result           |
+| -------------------- | ---------------- |
+| `npx tsc --noEmit`   | ✅ 0 errors      |
+| `npx expo lint`      | ✅ 0 warnings    |
+| `npx jest --verbose` | ✅ 16/16 passing |
 
 ### Commit
 
 ```
-feat: implement scoring engine with full jest coverage (Stage 12)
-
-- Implement src/features/scoring/scoringEngine.ts with pure functions
-- Add support for singles and doubles serve rotation (Pickleball rules)
-- Implement 'First Server' rule for start of game (Server 2)
-- Add undo support via deterministic event-log re-calculation
-- Add win condition check with win-by-two support
-- Add timeout tracking logic
-- Update Match and MatchSnapshot types to include serverNumber (1 | 2)
-- Add comprehensive test suite in src/features/scoring/scoringEngine.test.ts
-- Fix: getInitialMatchState now correctly starts at 0-0 for re-calculation consistency
-
----
-
-## Session 004 — UI Primitives (Stage 13)
-
-**Date:** May 11, 2026
-**Goal:** Build atomic UI components in `src/components/ui/` using NativeWind v4.
-
-### Stages Completed
-
-| Stage | Description   | Status  |
-| ----- | ------------- | ------- |
-| 13    | UI Primitives | ✅ Done |
-
-### Files Created / Modified
-
-**UI Components:**
-
-- `src/components/ui/Button.tsx` — primary / secondary / ghost / error variants, multiple sizes, loading state
-- `src/components/ui/Card.tsx` — dark mode aware surface container
-- `src/components/ui/LoadingSpinner.tsx` — themed activity indicator
-- `src/components/ui/EmptyState.tsx` — message + CTA component
-- `src/components/ui/ErrorState.tsx` — error display + retry component
-
-### Bugs Found & Fixed
-
-| #   | File           | Bug                                                                 | Fix                                                       |
-| --- | -------------- | ------------------------------------------------------------------- | --------------------------------------------------------- |
-| 1   | Various UI files | `import { styled } from "nativewind"` failed in v4                  | Removed `styled` and used standard components with `className` prop. |
-
-### Verification Results
-
-| Check               | Result      |
-| ------------------- | ----------- |
-| `npx tsc --noEmit`  | ✅ 0 errors |
-
-### Commit
-
-```
-feat: implement UI primitive components (Stage 13)
-
-- Create Button.tsx with primary, secondary, ghost, and error variants
-- Create Card.tsx with dark mode support
-- Create LoadingSpinner.tsx with full-screen and themed support
-- Create EmptyState.tsx for empty list scenarios
-- Create ErrorState.tsx for error handling UI
-- All components use NativeWind v4 className patterns
-- Verify zero TypeScript errors
-
----
-
-## Session 005 — Dashboard & MatchCard (Stage 14A)
-
-**Date:** May 11, 2026
-**Goal:** Implement the Dashboard screen and its primary list item component, MatchCard.
-
-### Stages Completed
-
-| Stage | Description | Status |
-| ----- | ----------- | ------ |
-| 14A   | Dashboard   | ✅ Done |
-
-### Files Created / Modified
-
-**UI Components:**
-
-- `src/components/features/matches/MatchCard.tsx` — High-contrast list item showing match type, date, team names, scores, and status.
-
-**Screens:**
-
-- `src/screens/Home/DashboardScreen.tsx` — Implemented recent matches list with `FlatList`, `LoadingSpinner`, `EmptyState`, and `ErrorState`. Added "Start New Match" button and navigation logic for active vs. completed matches.
-
-### Verification Results
-
-| Check               | Result      |
-| ------------------- | ----------- |
-| `npx tsc --noEmit`  | ✅ 0 errors |
-
-### Commit
-
-```
-feat: implement Dashboard and MatchCard (Stage 14A)
-
-- Create MatchCard component with high-contrast scores and status indicators
-- Update DashboardScreen to fetch and display recent matches using useMatchMock
-- Add loading, empty, and error states to Dashboard
-- Implement navigation logic: active matches -> LiveScoring, completed -> MatchDetail
-- Add "Start New Match" CTA to Dashboard header
-- Verify zero TypeScript errors
-
----
-
-## Session 006 — Match Setup (Stage 14B)
-
-**Date:** May 11, 2026
-**Goal:** Implement the Match Setup screen with form controls and SQLite integration.
-
-### Stages Completed
-
-| Stage | Description | Status |
-| ----- | ----------- | ------ |
-| 14B   | Match Setup | ✅ Done |
-
-### Files Created / Modified
-
-**Database:**
-
-- `src/services/db/matchDb.ts` — Updated schema and CRUD to support `server_number`.
-
-**Types:**
-
-- `src/types/match.types.ts` — Added `serverNumber: 1 | 2` to `Match` entity.
-
-**Screens:**
-
-- `src/screens/Home/MatchSetupScreen.tsx` — Implemented form with match type selection (singles/doubles), score limit (11, 15, 21), win-by-two and rally scoring toggles, and team name inputs. Integrated with `matchDb` to create new matches in SQLite.
-
-**Mocks & Tests:**
-
-- `src/mocks/match.mock.ts` — Updated to include `serverNumber`.
-- `src/features/scoring/scoringEngine.test.ts` — Updated to include `serverNumber`.
-
-**UI Components:**
-
-- `src/components/ui/Button.tsx` — Updated to use `children` for label text.
-- `src/components/ui/EmptyState.tsx` — Fixed `Button` usage.
-- `src/components/ui/ErrorState.tsx` — Fixed `Button` usage.
-
-### Verification Results
-
-| Check               | Result      |
-| ------------------- | ----------- |
-| `npx tsc --noEmit`  | ✅ 0 errors |
-
-### Commit
-
-```
-feat: implement Match Setup and update schema (Stage 14B)
-
-- Add serverNumber to Match type and SQLite schema
-- Implement MatchSetupScreen with full configuration form
-- Integrate MatchSetup with matchDb for real SQLite persistence
-- Fix Button component to use children for better flexibility
-- Update all UI components and screens to match new Button API
-- Update mocks and tests to reflect schema changes
-- Verify zero TypeScript errors
-
----
-
-## Session 007 — Live Scoring (Stage 14C)
-
-**Date:** May 11, 2026
-**Goal:** Implement the core Live Scoring screen with real-time scoreboard and scoring engine integration.
-
-### Stages Completed
-
-| Stage | Description  | Status  |
-| ----- | ------------ | ------- |
-| 14C   | Live Scoring | ✅ Done |
-
-### Files Created / Modified
-
-**UI Components:**
-
-- `src/components/features/scoring/TeamCard.tsx` — Large tap targets for scoring, shows team name, score, and server number.
-- `src/components/features/scoring/MatchTimer.tsx` — Displays match duration.
-- `src/components/features/scoring/ActionBar.tsx` — Undo, Timeout, and End Match buttons.
-
-**Screens:**
-
-- `src/screens/Match/LiveScoringScreen.tsx` — Core scoring screen. Wires `activeMatchStore` with `scoringEngine` and `matchDb`. Handles points, faults (long press), undo, timeout, and win condition detection.
-
-### Verification Results
-
-| Check               | Result      |
-| ------------------- | ----------- |
-| `npx tsc --noEmit`  | ✅ 0 errors |
-
-### Commit
-
-```
-feat: implement Live Scoring (Stage 14C)
-
-- Create TeamCard, MatchTimer, and ActionBar components for scoreboard UI
-- Implement LiveScoringScreen with activeMatchStore and scoringEngine integration
-- Add haptic feedback for scoring actions
-- Implement SQLite persistence for every scoring event
-- Add Undo and Timeout functionality
-- Add win condition detection and auto-navigation to summary
-- Verify zero TypeScript errors
-
----
-
-## Session 008 — Match Summary (Stage 14D)
-
-**Date:** May 11, 2026
-**Goal:** Implement the Match Summary screen with results, stats, and Share CTA.
-
-### Stages Completed
-
-| Stage | Description   | Status  |
-| ----- | ------------- | ------- |
-| 14D   | Match Summary | ✅ Done |
-
-### Files Created / Modified
-
-**Screens:**
-
-- `src/screens/Match/MatchSummaryScreen.tsx` — Implemented results screen with winner banner, final score display, and match statistics (duration, total points, etc.). Added "Share Result" and "Done" CTAs.
-
-### Verification Results
-
-| Check               | Result      |
-| ------------------- | ----------- |
-| `npx tsc --noEmit`  | ✅ 0 errors |
-
-### Commit
-
-```
-feat: implement Match Summary (Stage 14D)
-
-- Create MatchSummaryScreen with winner banner and high-contrast score display
-- Add match statistics breakdown (duration, total points, match type)
-- Implement "Share Result" CTA navigating to ShareCardScreen
-- Implement "Done" CTA navigating back to Dashboard
-- Verify zero TypeScript errors
-
----
-
-## Session 009 — Share Card (Stage 14E)
-
-**Date:** May 11, 2026
-**Goal:** Implement visual share cards (Feed/Story) and image capture/sharing services.
-
-### Stages Completed
-
-| Stage | Description | Status |
-| ----- | ----------- | ------ |
-| 14E   | Share Card  | ✅ Done |
-
-### Files Created / Modified
-
-**UI Components:**
-
-- `src/components/features/share/ShareCardFeed.tsx` — 1:1 square card for Instagram/Facebook feed.
-- `src/components/features/share/ShareCardStory.tsx` — 9:16 vertical card for Instagram/TikTok stories.
-
-**Services:**
-
-- `src/services/share/shareCard.service.ts` — Core logic for `captureRef`, `Sharing.shareAsync`, and `MediaLibrary.saveToLibraryAsync`.
-
-**Screens:**
-
-- `src/screens/Match/ShareCardScreen.tsx` — Implemented format toggle, visual preview, and actions for sharing and saving.
-
-### Verification Results
-
-| Check               | Result      |
-| ------------------- | ----------- |
-| `npx tsc --noEmit`  | ✅ 0 errors |
-
-### Commit
-
-```
-feat: implement visual share cards and sharing service (Stage 14E)
-
-- Create ShareCardFeed (1:1) and ShareCardStory (9:16) components
-- Implement shareCard.service.ts with image capture, sharing, and gallery save
-- Build ShareCardScreen with preview, format toggle, and action buttons
-- Integrate buildShareCardData util for consistent visual data
-- Verify zero TypeScript errors
-
----
-
-## Session 010 — History (Stage 14F)
-
-**Date:** May 11, 2026
-**Goal:** Implement Match History and Match Detail screens with SQLite integration.
-
-### Stages Completed
-
-| Stage | Description | Status  |
-| ----- | ----------- | ------- |
-| 14F   | History     | ✅ Done |
-
-### Files Created / Modified
-
-**Screens:**
-
-- `src/screens/History/MatchHistoryScreen.tsx` — Implemented list of all past matches from SQLite with `FlatList`, `RefreshControl`, and `MatchCard`.
-- `src/screens/History/MatchDetailScreen.tsx` — Implemented detailed breakdown of a past match with stats grid, winner banner, and "Reshare" functionality.
-
-### Verification Results
-
-| Check               | Result      |
-| ------------------- | ----------- |
-| `npx tsc --noEmit`  | ✅ 0 errors |
-
-### Commit
-
-```
-feat: implement Match History and Match Detail (Stage 14F)
-
-- Create MatchHistoryScreen with SQLite-backed FlatList and pull-to-refresh
-- Build MatchDetailScreen with stats breakdown and reshare functionality
-- Integrate MatchCard in history list
-- Add navigation between History stack and Match stack (for resharing)
-- Verify zero TypeScript errors
-
----
-
-## Session 011 — Settings & Profile (Stage 14G)
-
-**Date:** May 11, 2026
-**Goal:** Implement Settings and Profile screens with local persistence placeholders and stats.
-
-### Stages Completed
-
-| Stage | Description | Status |
-| ----- | ----------- | ------ |
-| 14G   | Settings & Profile | ✅ Done |
-
-### Files Created / Modified
-
-**Screens:**
-
-- `src/screens/Profile/SettingsScreen.tsx` — Implemented Preferences (Live Sync placeholder, Dark Mode, Haptics) and About sections.
-- `src/screens/Profile/ProfileScreen.tsx` — Implemented local profile with editable display name, match statistics (games played), and quick links to settings and export.
-
-### Verification Results
-
-| Check               | Result      |
-| ------------------- | ----------- |
-| `npx tsc --noEmit`  | ✅ 0 errors |
-
-### Commit
-
-```
-feat: implement Settings and Profile screens (Stage 14G)
-
-- Create SettingsScreen with UI placeholders for Live Sync and theme preferences
-- Build ProfileScreen with local display name editing and match stats summary
-- Integrate Profile stats with real SQLite data (total games played)
-- Add "Export Data" and "Sign In" placeholders
-- Finalize all Phase 1 feature screens
-- Verify zero TypeScript errors
+feat: complete Stage 14 — feature components and all screens
+
+Feature components:
+- Add MatchCard — Reanimated pulse for active matches, winner highlight,
+  checkWinCondition for accurate winner detection
+- Add TeamCard — large scoreboard display, serving indicator, server badge
+- Add MatchTimer — live/paused animation, formatDuration display
+- Add ActionBar — Undo/Timeout/EndMatch with disabled guards,
+  SafeAreaView from react-native-safe-area-context
+- Add ShareCardFeed — 1:1 format, NativeWind only (no StyleSheet),
+  ShareCardData props
+- Add ShareCardStory — 9:16 format, winner badge, DULA branding
+
+Screens:
+- Add MatchSetupScreen — full form, SQLite insert, store sync, navigate
+- Add MatchSummaryScreen — winner display, stats grid, share + history CTAs
+- Add MatchHistoryScreen — FlatList, pull-to-refresh, focus reload
+- Add MatchDetailScreen — event timeline, reshare, resume, soft delete
+- Add SettingsScreen — haptics/sound toggles, clear history
+- Add ProfileScreen — display name editor, live stats from SQLite
+
+New:
+- Add settingsStore — hapticsEnabled, soundEnabled
+- Add matchDb.deleteMatch — soft delete via sync_status = deleted
+- Add LOCAL_USER_ID constant
+
+Fix: serverNumber removed from Match (MatchSnapshot only), winner
+detection uses checkWinCondition throughout, no hard deletes,
+no nested Text inside Button, focus-only load pattern
 ```
 
 ---
@@ -634,16 +484,36 @@ feat: implement Settings and Profile screens (Stage 14G)
 
 **Start here:**
 
-Build `src/hooks/useMatch.ts` using TanStack Query to replace all remaining mock data with real SQLite state.
+Build `src/hooks/useMatch.ts` — TanStack Query, reads from `matchDb`.
 
----
----
----
----
----
----
----
----
+```ts
+// Pattern to follow (GLOBAL.md §9)
+export const matchKeys = {
+  all: () => ["matches"] as const,
+  list: () => ["matches", "list"] as const,
+  detail: (id: string) => ["matches", "detail", id] as const,
+};
+
+export function useMatchList() {
+  return useQuery({
+    queryKey: matchKeys.list(),
+    queryFn: async () => { ... } // reads from matchDb
+  });
+}
+
+export function useMatchDetail(uuid: string) {
+  return useQuery({
+    queryKey: matchKeys.detail(uuid),
+    queryFn: async () => { ... }
+  });
+}
+```
+
+Then swap in screens:
+
+- `DashboardScreen` — `useMatchMock` → `useMatch`
+- `MatchHistoryScreen` — direct SQLite calls → `useMatch`
+
 ---
 
 _SUMMARY.md — append only. Never delete previous sessions._
